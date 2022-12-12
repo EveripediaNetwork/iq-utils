@@ -115,6 +115,7 @@ export enum ValidatorCodes {
 }
 
 export enum EditSpecificMetaIds {
+  PREVIOUS_CID = 'previous_cid',
   COMMIT_MESSAGE = 'commit-message',
   WORDS_CHANGED = 'words-changed',
   PERCENT_CHANGED = 'percent-changed',
