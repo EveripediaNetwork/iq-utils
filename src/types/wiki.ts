@@ -27,13 +27,26 @@ export interface Image {
   type: ArrayBuffer | string | File | Blob;
 }
 
+export enum MediaType {
+  DEFAULT = 'GALLERY',
+  ICON = 'ICON',
+}
+
+export enum MediaSource {
+  IPFS_IMG = 'IPFS_IMG',
+  VIMEO = 'VIMEO',
+  YOUTUBE = 'YOUTUBE',
+  IPFS_VID = 'IPFS_VID',
+}
+
 export interface Media {
   id: string;
   size?: string;
   name?: string;
+  type?: MediaType;
   caption?: string;
   thumbnail?: string;
-  source: 'IPFS_IMG' | 'VIMEO' | 'YOUTUBE' | 'IPFS_VID';
+  source: MediaSource;
 }
 
 export const EditorContentOverride = '%OVERRIDE@EDITOR@MARKDOWN%';
