@@ -181,6 +181,12 @@ export const Languages: LanguagesType = {
   ko: LanguagesValuesEnum.KOREAN,
 };
 
+export enum LinkedWikiKey {
+  FOUNDER = 'founder',
+}
+
+export type LinkedWikis = Record<LinkedWikiKey, string[]>;
+
 export interface Wiki {
   id: string;
   transactionHash?: string;
@@ -195,6 +201,7 @@ export interface Wiki {
   media?: Media[];
   user: User;
   metadata: MData[];
+  linkedWikis?: LinkedWikis[];
   version: number;
   language: LanguagesISOEnum;
   updated?: string;
