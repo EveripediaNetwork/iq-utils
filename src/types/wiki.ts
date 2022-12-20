@@ -24,7 +24,7 @@ export interface BaseTag {
 
 export interface Image {
   id: string;
-  type: ArrayBuffer | string | File | Blob;
+  type: string;
 }
 
 export enum MediaType {
