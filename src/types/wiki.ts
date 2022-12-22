@@ -183,6 +183,7 @@ export const Languages: LanguagesType = {
 
 export enum LinkedWikiKey {
   FOUNDER = 'founder',
+  BLOCKCHAIN = 'blockchain',
 }
 
 export type LinkedWikis = Record<LinkedWikiKey, string[]>;
