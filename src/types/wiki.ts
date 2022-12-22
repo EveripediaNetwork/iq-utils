@@ -186,7 +186,7 @@ export enum LinkedWikiKey {
   BLOCKCHAIN = 'blockchain',
 }
 
-export type LinkedWikis = Record<LinkedWikiKey, string[]>;
+export type LinkedWikis = Record<LinkedWikiKey, string[] | undefined>;
 
 export interface Wiki {
   id: string;
