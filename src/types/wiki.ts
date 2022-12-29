@@ -125,6 +125,7 @@ export enum ValidatorCodes {
   MEDIA = 'MEDIA_ERROR',
   GLOBAL_RATE_LIMIT = 'GLOBAL_RATE_LIMIT',
   ID_ERROR = 'ID_ERROR',
+  LINKED_WIKIS = 'LINKED_WIKIS',
 }
 
 export enum EditSpecificMetaIds {
