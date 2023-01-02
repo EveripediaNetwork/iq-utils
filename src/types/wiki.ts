@@ -247,4 +247,4 @@ export const whiteListedDomains = [
   'ipfs.everipedia.org/ipfs',
 ];
 
-export const whiteListedLinkNames = ['YOUTUBE@VID'];
+export const whiteListedLinkNames = ['YOUTUBE@VID', 'DUNE@EMBED'];
