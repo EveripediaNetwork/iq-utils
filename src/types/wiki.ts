@@ -203,7 +203,7 @@ export interface Wiki {
   media?: Media[];
   user: User;
   metadata: MData[];
-  linkedWikis?: LinkedWikis;
+  linkedWikis?: LinkedWikis[];
   version: number;
   language: LanguagesISOEnum;
   updated?: string;
