@@ -28,7 +28,7 @@ export interface Image {
 }
 
 export enum MediaType {
-  DEFAULT = 'GALLERY',
+  GALLERY = 'GALLERY',
   ICON = 'ICON',
 }
 
