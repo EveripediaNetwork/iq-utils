@@ -208,6 +208,7 @@ export interface Wiki {
   language: LanguagesISOEnum;
   updated?: string;
   created?: string;
+  views?: number;
   author: Author;
   hidden: boolean;
 }
