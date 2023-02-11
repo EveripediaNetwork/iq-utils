@@ -73,6 +73,7 @@ export enum CommonMetaIds {
   COIN_MARKET_CAP = 'coinmarketcap_url',
   COINGECKO_PROFILE = 'coingecko_profile',
   OPENSEA_PROFILE = 'opensea_profile',
+  MEDIUM_PROFILE = 'medium_profile',
 
   // Explorers
   ETHERSCAN_PROFILE = 'etherscan_profile',
@@ -101,6 +102,7 @@ export const WikiPossibleSocialsList = [
   CommonMetaIds.COIN_MARKET_CAP,
   CommonMetaIds.COINGECKO_PROFILE,
   CommonMetaIds.OPENSEA_PROFILE,
+  CommonMetaIds.MEDIUM_PROFILE,
 
   // Explorers
   CommonMetaIds.ETHERSCAN_PROFILE,
