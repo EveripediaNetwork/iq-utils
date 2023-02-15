@@ -1,33 +1,22 @@
-import {
-  Author,
-  BaseCategory,
-  BaseTag,
-  Image,
-  LanguagesISOEnum,
-  LinkedWikis,
-  MData,
-  Media,
-  User,
-  Wiki,
-} from './wiki';
+import { Wiki } from './wiki';
 
 type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
 
-export type WikiTypeBuilderExtender = DeepPartial<{
-  categories: BaseCategory[];
-  tags: BaseTag[];
-  images: Image[];
-  media: Media[];
-  user: User;
-  metadata: MData[];
-  linkedWikis?: LinkedWikis;
-  language: LanguagesISOEnum;
-  author: Author;
+type PrimitiveType = number | string | boolean | symbol | null | undefined;
+
+export type RecordTypeNonPrimitive<T> = DeepPartial<{
+  [K in keyof T]: [T[K]] extends [PrimitiveType] ? never : T[K];
 }>;
 
-export type WikiTypeBuilder<
-  C extends WikiTypeBuilderExtender,
-  L extends keyof Wiki
-> = C & Pick<Wiki, Exclude<L, keyof C>>;
+export type RecordTypePicker<
+  T extends object,
+  NonPrimitiveOverrides extends RecordTypeNonPrimitive<T>,
+  Keys extends keyof T
+> = NonPrimitiveOverrides & Pick<T, Exclude<Keys, keyof NonPrimitiveOverrides>>;
+
+export type WikiBuilder<
+  NonPrimitiveOverrides extends RecordTypeNonPrimitive<Wiki>,
+  Keys extends keyof Wiki
+> = RecordTypePicker<Wiki, NonPrimitiveOverrides, Keys>;
