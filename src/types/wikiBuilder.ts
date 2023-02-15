@@ -6,7 +6,7 @@ type DeepPartial<T> = {
 
 type PrimitiveType = number | string | boolean | symbol | null | undefined;
 
-type RecordTypeNonPrimitive<T> = DeepPartial<{
+export type RecordTypeNonPrimitive<T> = DeepPartial<{
   [K in keyof T]: [T[K]] extends [PrimitiveType] ? never : T[K];
 }>;
 
