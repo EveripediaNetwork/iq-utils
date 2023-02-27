@@ -191,6 +191,19 @@ export enum LinkedWikiKey {
 
 export type LinkedWikis = Partial<Record<LinkedWikiKey, string[]>>;
 
+export enum EventType {
+  CREATED = 'CREATED',
+  DEFAULT = 'DEFAULT',
+}
+
+export interface BaseEvents {
+  date: string;
+  title?: string;
+  type: EventType;
+  description?: string;
+  link?: string;
+}
+
 export interface Wiki {
   id: string;
   transactionHash?: string;
@@ -203,6 +216,7 @@ export interface Wiki {
   tags: BaseTag[];
   images?: Image[];
   media?: Media[];
+  events?: BaseEvents[];
   user: User;
   metadata: MData[];
   linkedWikis?: LinkedWikis;
