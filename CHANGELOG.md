@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.1.3
+
+### Patch Changes
+
+- 0810860: Adds Event type to wiki
+
 ## 0.1.2
 
 ### Patch Changes
