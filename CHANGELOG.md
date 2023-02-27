@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.1.4
+
+### Patch Changes
+
+- 84f8b57: adds events to validator code
+
 ## 0.1.3
 
 ### Patch Changes
