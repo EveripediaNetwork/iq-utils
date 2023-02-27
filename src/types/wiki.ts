@@ -128,6 +128,7 @@ export enum ValidatorCodes {
   GLOBAL_RATE_LIMIT = 'GLOBAL_RATE_LIMIT',
   ID_ERROR = 'ID_ERROR',
   LINKED_WIKIS = 'LINKED_WIKIS',
+  EVENTS = 'EVENTS_ERROR',
 }
 
 export enum EditSpecificMetaIds {
