@@ -150,11 +150,6 @@ export interface User {
   profile?: ProfileData | null;
 }
 
-export interface Author {
-  id: string | null;
-  profile?: ProfileData | null;
-}
-
 export interface CiteReference {
   id: string;
   url: string;
@@ -226,7 +221,7 @@ export interface Wiki {
   updated?: string;
   created?: string;
   views?: number;
-  author: Author;
+  author: User;
   hidden: boolean;
 }
 
