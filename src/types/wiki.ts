@@ -74,6 +74,7 @@ export enum CommonMetaIds {
   COINGECKO_PROFILE = 'coingecko_profile',
   OPENSEA_PROFILE = 'opensea_profile',
   MEDIUM_PROFILE = 'medium_profile',
+  MIRROR_PROFILE = 'mirror_profile',
 
   // Explorers
   ETHERSCAN_PROFILE = 'etherscan_profile',
