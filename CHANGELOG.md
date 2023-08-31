@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.1.5
+
+### Patch Changes
+
+- 33c7f68: Add mirror social link enum
+
 ## 0.1.4
 
 ### Patch Changes
