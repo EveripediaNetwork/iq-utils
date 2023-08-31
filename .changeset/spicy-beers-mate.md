@@ -2,4 +2,4 @@
 "@everipedia/iq-utils": patch
 ---
 
-Fix medium links validation regex
+Add mirror social link enum
