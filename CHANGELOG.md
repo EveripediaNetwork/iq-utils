@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.2.0
+
+### Minor Changes
+
+- badb57a: Adds basescan and ftmscan chain explorers
+
 ## 0.1.5
 
 ### Patch Changes
