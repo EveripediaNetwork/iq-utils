@@ -82,6 +82,8 @@ export enum CommonMetaIds {
   POLYGONSCAN_PROFILE = 'polygonscan_profile',
   BSCSCAN_PROFILE = 'bscscan_profile',
   OPTIMISTIC_ETHERSCAN_PROFILE = 'optimistic_etherscan_profile',
+  BASESCAN_PROFILE = 'basescan_profile',
+  FTMSCAN_PROFILE = 'ftmscan_profile',
 }
 
 export const WikiPossibleSocialsList = [
@@ -111,6 +113,8 @@ export const WikiPossibleSocialsList = [
   CommonMetaIds.POLYGONSCAN_PROFILE,
   CommonMetaIds.BSCSCAN_PROFILE,
   CommonMetaIds.OPTIMISTIC_ETHERSCAN_PROFILE,
+  CommonMetaIds.BASESCAN_PROFILE,
+  CommonMetaIds.FTMSCAN_PROFILE,
 ];
 
 export enum ValidatorCodes {
