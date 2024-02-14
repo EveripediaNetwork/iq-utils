@@ -58,6 +58,7 @@ export enum CommonMetaIds {
   // other info
   WEBSITE = 'website',
   CONTRACT_URL = 'contract_url',
+  EVENT_LOCATION = 'event_location',
 
   // social Links
   EMAIL_URL = 'email_url',
