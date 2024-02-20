@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.2.2
+
+### Patch Changes
+
+- 35a0985: Update LinkedWikiKey enum
+
 ## 0.2.1
 
 ### Patch Changes
