@@ -194,6 +194,7 @@ export const Languages: LanguagesType = {
 export enum LinkedWikiKey {
   FOUNDER = 'founders',
   BLOCKCHAIN = 'blockchains',
+  SPEAKERS = 'speakers',
 }
 
 export type LinkedWikis = Partial<Record<LinkedWikiKey, string[]>>;
