@@ -1,5 +1,17 @@
 # @everipedia/iq-utils
 
+## 0.2.2
+
+### Patch Changes
+
+- 35a0985: Update LinkedWikiKey enum
+
+## 0.2.1
+
+### Patch Changes
+
+- 621d2eb: Add events location metadata id
+
 ## 0.2.0
 
 ### Minor Changes
