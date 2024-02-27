@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.2.3
+
+### Patch Changes
+
+- 4fdee73: Patches common meta id to include tiktok
+
 ## 0.2.2
 
 ### Patch Changes
