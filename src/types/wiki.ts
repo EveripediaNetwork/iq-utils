@@ -204,6 +204,7 @@ export type LinkedWikis = Partial<Record<LinkedWikiKey, string[]>>;
 export enum EventType {
 	CREATED = "CREATED",
 	DEFAULT = "DEFAULT",
+	MULTIDATE = "MULTIDATE",
 }
 
 export interface BaseEvents {
@@ -212,6 +213,8 @@ export interface BaseEvents {
 	type: EventType;
 	description?: string;
 	link?: string;
+    multiDateStart?: string
+    multiDateEnd?: string
 }
 
 export interface Wiki {
