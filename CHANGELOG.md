@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.2.4
+
+### Patch Changes
+
+- 716a8b5: Update events with support for dates running consecutively
+
 ## 0.2.3
 
 ### Patch Changes
