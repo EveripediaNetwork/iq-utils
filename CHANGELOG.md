@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.2.6
+
+### Patch Changes
+
+- 2516a5c: Create lib for deep comparison
+
 ## 0.2.4
 
 ### Patch Changes
