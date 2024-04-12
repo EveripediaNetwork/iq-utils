@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.2.7
+
+### Patch Changes
+
+- 75ea28e: Resolve issue with import error
+
 ## 0.2.6
 
 ### Patch Changes
