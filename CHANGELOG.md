@@ -1,5 +1,11 @@
 # @everipedia/iq-utils
 
+## 0.2.8
+
+### Patch Changes
+
+- 9236647: Updating explorer commonMetaIds types
+
 ## 0.2.7
 
 ### Patch Changes
