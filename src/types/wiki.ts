@@ -90,6 +90,13 @@ export enum CommonMetaIds {
   AVASCAN_PROFILE = 'avascan_profile',
   NEARBLOCKS_PROFILE = 'nearblocks_profile',
   TROSCAN_PROFILE = 'troscan_profile',
+  XRPSCAN_PROFILE = 'xrpscan_profile',
+  KAVASCAN_PROFILE = 'kavascan_profile',
+  TONSCAN_PROFILE = 'tonscan_profile',
+  CELOSCAN_PROFILE = 'celoscan_profile',
+  CRONOSCAN_PROFILE = 'cronoscan_profile',
+  ZKSCAN_PROFILE = 'zkscan_profile',
+  EXPLORER_INJECTIVE = 'explorer_injective_profile',
 }
 
 export const WikiPossibleSocialsList = [
@@ -122,6 +129,13 @@ export const WikiPossibleSocialsList = [
   CommonMetaIds.OPTIMISTIC_ETHERSCAN_PROFILE,
   CommonMetaIds.BASESCAN_PROFILE,
   CommonMetaIds.FTMSCAN_PROFILE,
+  CommonMetaIds.XRPSCAN_PROFILE,
+  CommonMetaIds.KAVASCAN_PROFILE,
+  CommonMetaIds.TONSCAN_PROFILE,
+  CommonMetaIds.CELOSCAN_PROFILE,
+  CommonMetaIds.CRONOSCAN_PROFILE,
+  CommonMetaIds.ZKSCAN_PROFILE,
+  CommonMetaIds.EXPLORER_INJECTIVE,
 ];
 
 export enum ValidatorCodes {
