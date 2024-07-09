@@ -2,4 +2,4 @@
 '@everipedia/iq-utils': patch
 ---
 
-Update CommonMetaIds types for Explorers link
+Update CommonMetaIds types for Explorers links
