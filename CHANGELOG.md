@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 0.2.9
+
+### Patch Changes
+
+- 55e5cd8: Update CommonMetaIds types for Explorers links
+
 ### Patch Changes
 
 - 9236647: Updating explorer commonMetaIds types
