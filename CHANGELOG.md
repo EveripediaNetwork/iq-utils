@@ -1,5 +1,3 @@
-# @everipedia/iq-utils
-
 ## 0.2.8
 
 ### Patch Changes
