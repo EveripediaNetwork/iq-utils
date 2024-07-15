@@ -97,6 +97,7 @@ export enum CommonMetaIds {
   CRONOSCAN_PROFILE = 'cronoscan_profile',
   ZKSCAN_PROFILE = 'zkscan_profile',
   EXPLORER_INJECTIVE = 'explorer_injective_profile',
+  BLASTSCAN_PROFILE = 'blastscan_profile',
 }
 
 export const WikiPossibleSocialsList = [
@@ -136,6 +137,7 @@ export const WikiPossibleSocialsList = [
   CommonMetaIds.CRONOSCAN_PROFILE,
   CommonMetaIds.ZKSCAN_PROFILE,
   CommonMetaIds.EXPLORER_INJECTIVE,
+  CommonMetaIds.BLASTSCAN_PROFILE
 ];
 
 export enum ValidatorCodes {
