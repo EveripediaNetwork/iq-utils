@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 0.2.10
+
+### Patch Changes
+
+- 88843ea: added a new explorer
+
 ## 0.2.9
 
 ### Patch Changes
