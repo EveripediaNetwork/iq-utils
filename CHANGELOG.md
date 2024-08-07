@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 0.2.11
+
+### Patch Changes
+
+- 81ee461: Adds blockchainWikis and founderWikis type
+
 ## 0.2.10
 
 ### Patch Changes
