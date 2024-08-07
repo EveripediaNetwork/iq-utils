@@ -137,7 +137,7 @@ export const WikiPossibleSocialsList = [
   CommonMetaIds.CRONOSCAN_PROFILE,
   CommonMetaIds.ZKSCAN_PROFILE,
   CommonMetaIds.EXPLORER_INJECTIVE,
-  CommonMetaIds.BLASTSCAN_PROFILE
+  CommonMetaIds.BLASTSCAN_PROFILE,
 ];
 
 export enum ValidatorCodes {
@@ -237,6 +237,11 @@ export interface BaseEvents {
   multiDateEnd?: string;
 }
 
+type WikiReference = {
+  id: string;
+  title: string;
+};
+
 export interface Wiki {
   id: string;
   transactionHash?: string;
@@ -253,6 +258,8 @@ export interface Wiki {
   user: User;
   metadata: MData[];
   linkedWikis?: LinkedWikis;
+  founderWikis: WikiReference[];
+  blockchainWikis: WikiReference[];
   version: number;
   language: LanguagesISOEnum;
   updated?: string;

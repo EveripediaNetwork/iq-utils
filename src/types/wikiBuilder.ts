@@ -1,4 +1,4 @@
-import { Wiki } from './wiki';
+import type { Wiki } from './wiki';
 
 type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
