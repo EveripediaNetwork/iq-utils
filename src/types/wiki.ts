@@ -237,7 +237,7 @@ export interface BaseEvents {
 	multiDateEnd?: string;
 }
 
-type SimplifiedWiki = {
+type WikiReference = {
 	id: string;
 	title: string;
 };
@@ -258,8 +258,8 @@ export interface Wiki {
 	user: User;
 	metadata: MData[];
 	linkedWikis?: LinkedWikis;
-	founderWikis: SimplifiedWiki[];
-	blockchainWikis: SimplifiedWiki[];
+	founderWikis: WikiReference[];
+	blockchainWikis: WikiReference[];
 	version: number;
 	language: LanguagesISOEnum;
 	updated?: string;
