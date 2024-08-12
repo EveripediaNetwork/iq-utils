@@ -1,4 +1,13 @@
 import {
+	IPFS_HASH_LENGTH,
+	MAX_MEDIA_COUNT,
+	MEDIA_UPLOAD_PENDING_SUFFIX,
+	WIKI_CONTENT_MIN_WORDS,
+	WIKI_SUMMARY_MAX_LENGTH,
+	WIKI_TITLE_MAX_LENGTH,
+} from "../data/constants";
+import {
+	CommonMetaIds,
 	MediaSource,
 	MediaType,
 	type Wiki,
@@ -6,19 +15,12 @@ import {
 	whiteListedLinkNames,
 } from "../types/wiki";
 
-const WIKI_SUMMARY_MAX_LENGTH = 255;
-const WIKI_CONTENT_MIN_WORDS = 100;
-const WIKI_TITLE_MAX_LENGTH = 60;
-const MEDIA_UPLOAD_PENDING_SUFFIX = "default";
-const MAX_MEDIA_COUNT = 25;
-const IPFS_HASH_LENGTH = 46;
-
 /**
  * Counts the number of words in a given string.
  * @param text - The input string to count words from.
  * @returns The number of words in the string.
  */
-const countWords = (text: string): number =>
+const countWords = (text: string) =>
 	text.split(" ").filter((word) => word !== "").length;
 
 /**
@@ -26,7 +28,7 @@ const countWords = (text: string): number =>
  * @param urlString - The string to check.
  * @returns True if the string is a valid URL, false otherwise.
  */
-const isValidUrl = (urlString: string): boolean => {
+const isValidUrl = (urlString: string) => {
 	try {
 		return Boolean(new URL(urlString));
 	} catch (_e) {
@@ -39,11 +41,12 @@ const isValidUrl = (urlString: string): boolean => {
  * @param content - The content to check for links.
  * @returns True if all links are verified, false otherwise.
  */
-export const areContentLinksVerified = (content: string): boolean => {
+export const areContentLinksVerified = (content: string) => {
 	const markdownLinks = content.match(/\[(.*?)\]\((.*?)\)/g);
 	return (
 		markdownLinks?.every((link) => {
-			const [, linkText, linkUrl] = link.match(/\[(.*?)\]\((.*?)\)/) || [];
+			const [, linkText, linkUrl] =
+				RegExp(/\[(.*?)\]\((.*?)\)/).exec(link) || [];
 
 			if (
 				linkText &&
@@ -70,7 +73,7 @@ export const areContentLinksVerified = (content: string): boolean => {
  * @param wiki - The wiki object to check.
  * @returns True if the media is valid, false otherwise.
  */
-const isMediaValid = (wiki: Wiki): boolean => {
+const isMediaValid = (wiki: Wiki) => {
 	if (!wiki.media) return true;
 
 	const isMediaContentValid = wiki.media.every((media) => {
@@ -113,7 +116,7 @@ const isMediaValid = (wiki: Wiki): boolean => {
  * @param wiki - The wiki object to check.
  * @returns True if any media is still uploading, false otherwise.
  */
-const isAnyMediaUploading = (wiki: Wiki): boolean =>
+const isAnyMediaUploading = (wiki: Wiki) =>
 	wiki.media?.some((media) => media.id.endsWith(MEDIA_UPLOAD_PENDING_SUFFIX)) ??
 	false;
 
@@ -122,10 +125,11 @@ const isAnyMediaUploading = (wiki: Wiki): boolean =>
  * @param wiki - The wiki object to check.
  * @returns True if the event URL is missing, false otherwise.
  */
-const isEventUrlMissing = (wiki: Wiki): boolean => {
+const isEventUrlMissing = (wiki: Wiki) => {
 	if (wiki.tags.some((tag) => tag.id === "Events")) {
 		const referencesData =
-			wiki.metadata.find((meta) => meta.id === "references")?.value || "[]";
+			wiki.metadata.find((meta) => meta.id === CommonMetaIds.REFERENCES)
+				?.value || "[]";
 		const references = JSON.parse(referencesData);
 		return !references.some(
 			(item: { description: string }) =>
@@ -140,7 +144,7 @@ const isEventUrlMissing = (wiki: Wiki): boolean => {
  * @param wiki - The wiki object to check.
  * @returns True if the event date is missing, false otherwise.
  */
-const isEventDateMissing = (wiki: Wiki): boolean =>
+const isEventDateMissing = (wiki: Wiki) =>
 	wiki.tags.some((tag) => tag.id === "Events") && wiki.events?.length === 0;
 
 /**
@@ -148,7 +152,7 @@ const isEventDateMissing = (wiki: Wiki): boolean =>
  * @param wiki - The wiki object to check.
  * @returns True if the summary exceeds the limit, false otherwise.
  */
-const isSummaryTooLong = (wiki: Wiki): boolean =>
+const isSummaryTooLong = (wiki: Wiki) =>
 	!!(wiki.summary && wiki.summary.length > WIKI_SUMMARY_MAX_LENGTH);
 
 /**
@@ -156,8 +160,10 @@ const isSummaryTooLong = (wiki: Wiki): boolean =>
  * @param wiki - The wiki object to check.
  * @returns True if there are no citations, false otherwise.
  */
-const hasNoCitations = (wiki: Wiki): boolean => {
-	const references = wiki.metadata.find((meta) => meta.id === "references");
+const hasNoCitations = (wiki: Wiki) => {
+	const references = wiki.metadata.find(
+		(meta) => meta.id === CommonMetaIds.REFERENCES,
+	);
 	return !references?.value || references.value.length === 0;
 };
 
@@ -166,9 +172,7 @@ const hasNoCitations = (wiki: Wiki): boolean => {
  * @param wiki - The wiki object to validate.
  * @returns An object containing the validation result and an error message if applicable.
  */
-export const validateWiki = (
-	wiki: Wiki,
-): { isValid: boolean; error?: string } => {
+export const validateWiki = (wiki: Wiki) => {
 	const wordCount = countWords(wiki.content || "");
 
 	if (!wiki.title) {
