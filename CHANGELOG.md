@@ -1,5 +1,12 @@
 ## 0.2.8
 
+## 0.3.0
+
+### Minor Changes
+
+- a38f82b: Adds is deep equal refactor
+- 7c28dbb: Adds is valid wiki checks
+
 ## 0.2.11
 
 ### Patch Changes
