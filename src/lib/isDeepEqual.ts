@@ -1,52 +1,76 @@
-function isDeepEqual(obj1: any, obj2: any): boolean {
-  // If both are strings, compare them ignoring whitespace
-  if (typeof obj1 === 'string' && typeof obj2 === 'string') {
-    return obj1.replace(/\s+/g, '') === obj2.replace(/\s+/g, '');
-  }
+type ComparableType = string | number | boolean | null | undefined | object;
 
-  // Check if they are the same reference or both null/undefined
-  if (obj1 === obj2) {
-    return true;
-  }
+function isDeepEqual(
+	baseObject: ComparableType,
+	comparisonObject: ComparableType,
+): boolean {
+	return compareValues(baseObject, comparisonObject);
+}
 
-  // Check if either is null/undefined, or not both are objects (including functions)
-  if (
-    typeof obj1 !== 'object' ||
-    obj1 === null ||
-    typeof obj2 !== 'object' ||
-    obj2 === null
-  ) {
-    return false;
-  }
+function compareValues(
+	base: ComparableType,
+	comparison: ComparableType,
+): boolean {
+	if (base === comparison) {
+		return true;
+	}
 
-  // Get the keys of both objects
-  const keysA = Object.keys(obj1);
-  const keysB = Object.keys(obj2);
+	if (base == null || comparison == null) {
+		return false;
+	}
 
-  // Check if the number of properties is different
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
+	if (typeof base !== typeof comparison) {
+		return false;
+	}
 
-  // Check if obj2 has all keys present in obj1 and compare each key
-  for (const key of keysA) {
-    if (!keysB.includes(key)) {
-      return false;
-    }
+	if (typeof base === "string") {
+		return compareStrings(base, comparison as string);
+	}
 
-    // Check if the property is a function and compare the function's code
-    if (typeof obj1[key] === 'function' || typeof obj2[key] === 'function') {
-      if (obj1[key].toString() !== obj2[key].toString()) {
-        return false;
-      }
-    } else {
-      // Recursive call for nested objects or arrays
-      if (!isDeepEqual(obj1[key], obj2[key])) {
-        return false;
-      }
-    }
-  }
-  return true;
+	if (base instanceof Date && comparison instanceof Date) {
+		return base.getTime() === comparison.getTime();
+	}
+
+	if (base instanceof RegExp && comparison instanceof RegExp) {
+		return base.toString() === comparison.toString();
+	}
+
+	if (typeof base === "object") {
+		return compareObjects(base, comparison as object);
+	}
+
+	return false;
+}
+
+function compareStrings(base: string, comparison: string): boolean {
+	return base.replace(/\s+/g, "") === comparison.replace(/\s+/g, "");
+}
+
+function compareObjects(base: object, comparison: object): boolean {
+	const baseKeys = Object.keys(base);
+	const comparisonKeys = Object.keys(comparison);
+
+	if (baseKeys.length !== comparisonKeys.length) {
+		return false;
+	}
+
+	return baseKeys.every((key) => {
+		if (!Object.prototype.hasOwnProperty.call(comparison, key)) {
+			return false;
+		}
+
+		const baseValue = (base as Record<string, ComparableType>)[key];
+		const comparisonValue = (comparison as Record<string, ComparableType>)[key];
+
+		if (
+			typeof baseValue === "function" &&
+			typeof comparisonValue === "function"
+		) {
+			return baseValue.toString() === comparisonValue.toString();
+		}
+
+		return compareValues(baseValue, comparisonValue);
+	});
 }
 
 export default isDeepEqual;
