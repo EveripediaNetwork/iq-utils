@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 0.3.1
+
+### Patch Changes
+
+- 3add847: Add export for wiki validation
+
 ## 0.3.0
 
 ### Minor Changes
