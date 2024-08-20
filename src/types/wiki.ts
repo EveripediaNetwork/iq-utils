@@ -228,6 +228,7 @@ export enum EventType {
 }
 
 export interface BaseEvents {
+  id?: string;
   date: string;
   title?: string;
   type: EventType;
