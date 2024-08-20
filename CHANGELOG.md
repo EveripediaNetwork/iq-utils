@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 0.4.0
+
+### Minor Changes
+
+- fa54b6f: Adds is base event id for the metadata structure
+
 ## 0.3.1
 
 ### Patch Changes
