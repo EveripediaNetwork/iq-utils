@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 0.4.1
+
+### Patch Changes
+
+- 1b7060e: Add action to base event type
+
 ## 0.4.0
 
 ### Minor Changes
