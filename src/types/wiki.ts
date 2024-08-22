@@ -227,6 +227,8 @@ export enum EventType {
   MULTIDATE = 'MULTIDATE',
 }
 
+export type EventAction = 'DELETE' | null;
+
 export interface BaseEvents {
   id?: string;
   date: string;
@@ -236,6 +238,7 @@ export interface BaseEvents {
   link?: string;
   multiDateStart?: string;
   multiDateEnd?: string;
+  action?: EventAction;
 }
 
 type WikiReference = {
