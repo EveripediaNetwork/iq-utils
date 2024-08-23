@@ -1,6 +1,10 @@
 
----
-'@everipedia/iq-utils': patch
----
+--- 
 
-Add is Update event action types
+'@everipedia/iq-utils': patch 
+
+--- 
+ 
+
+Add is Update event action types 
+ 
