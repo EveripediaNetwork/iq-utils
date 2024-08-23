@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 0.4.2
+
+### Patch Changes
+
+- 82b2cb8: Add is Update event action types
+
 ## 0.4.1
 
 ### Patch Changes
