@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 0.4.3
+
+### Patch Changes
+
+- 7ba3d57: Update BaseEvents with location field
+
 ## 0.4.2
 
 ### Patch Changes
