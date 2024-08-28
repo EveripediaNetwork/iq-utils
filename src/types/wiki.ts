@@ -242,6 +242,8 @@ export interface BaseEvents {
   link?: string;
   multiDateStart?: string;
   multiDateEnd?: string;
+  continent?: string;
+  country?: string;
   action?: EventAction | null;
 }
 
