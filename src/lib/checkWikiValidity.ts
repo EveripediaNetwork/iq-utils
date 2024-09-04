@@ -21,7 +21,7 @@ import {
  * @param text - The input string to count words from.
  * @returns The number of words in the string.
  */
-export const countWords = (text: string) =>
+const countWords = (text: string) =>
 	text.split(" ").filter((word) => word !== "").length;
 
 /**
@@ -29,7 +29,7 @@ export const countWords = (text: string) =>
  * @param urlString - The string to check.
  * @returns True if the string is a valid URL, false otherwise.
  */
-export const isValidUrl = (urlString: string) => {
+const isValidUrl = (urlString: string) => {
 	try {
 		return Boolean(new URL(urlString));
 	} catch (_e) {
@@ -74,7 +74,7 @@ export const areContentLinksVerified = (content: string) => {
  * @param wiki - The wiki object to check.
  * @returns True if the media is valid, false otherwise.
  */
-export const isMediaValid = (wiki: Wiki) => {
+const isMediaValid = (wiki: Wiki) => {
 	if (!wiki.media) return true;
 
 	const isMediaContentValid = wiki.media.every((media) => {
@@ -117,7 +117,7 @@ export const isMediaValid = (wiki: Wiki) => {
  * @param wiki - The wiki object to check.
  * @returns True if any media is still uploading, false otherwise.
  */
-export const isAnyMediaUploading = (wiki: Wiki) =>
+const isAnyMediaUploading = (wiki: Wiki) =>
 	wiki.media?.some((media) => media.id.endsWith(MEDIA_UPLOAD_PENDING_SUFFIX)) ??
 	false;
 
@@ -126,7 +126,7 @@ export const isAnyMediaUploading = (wiki: Wiki) =>
  * @param wiki - The wiki object to check.
  * @returns True if the event URL is missing, false otherwise.
  */
-export const isEventUrlMissing = (wiki: Wiki) => {
+const isEventUrlMissing = (wiki: Wiki) => {
 	if (wiki.tags.some((tag) => tag.id === "Events")) {
 		const referencesData =
 			wiki.metadata.find((meta) => meta.id === CommonMetaIds.REFERENCES)
@@ -145,7 +145,7 @@ export const isEventUrlMissing = (wiki: Wiki) => {
  * @param wiki - The wiki object to check.
  * @returns True if the event date is missing, false otherwise.
  */
-export const isEventDateMissing = (wiki: Wiki) =>
+const isEventDateMissing = (wiki: Wiki) =>
 	wiki.tags.some((tag) => tag.id === "Events") && wiki.events?.length === 0;
 
 /**
@@ -153,7 +153,7 @@ export const isEventDateMissing = (wiki: Wiki) =>
  * @param wiki - The wiki object to check.
  * @returns True if the summary exceeds the limit, false otherwise.
  */
-export const isSummaryTooLong = (wiki: Wiki) =>
+const isSummaryTooLong = (wiki: Wiki) =>
 	!!(wiki.summary && wiki.summary.length > WIKI_SUMMARY_MAX_LENGTH);
 
 /**
@@ -161,7 +161,7 @@ export const isSummaryTooLong = (wiki: Wiki) =>
  * @param wiki - The wiki object to check.
  * @returns True if there are no citations, false otherwise.
  */
-export const hasNoCitations = (wiki: Wiki) => {
+const hasNoCitations = (wiki: Wiki) => {
 	const references = wiki.metadata.find(
 		(meta) => meta.id === CommonMetaIds.REFERENCES,
 	);
