@@ -1,5 +1,15 @@
 ## 0.2.8
 
+## 0.4.4
+
+### Patch Changes
+
+- bd3b671: Added function export
+- 3903b43: fixes
+- 3903b43: fixes lock file
+- 109a4d9: adds export for constants
+- 275d12e: Adds export to wiki check functions
+
 ## 0.4.3
 
 ### Patch Changes
