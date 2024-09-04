@@ -86,7 +86,7 @@ const countQuality = (idealCount: number, realCount: number): number => {
 };
 
 const getHostnameFromRegex = (url: string) => {
-	const matches = url.match(/^https?:\/\/([^/?#]+)(?:[/?#]|$)/i);
+	const matches = RegExp(/^https?:\/\/([^/?#]+)(?:[/?#]|$)/i).exec(url);
 	return matches?.[1];
 };
 
