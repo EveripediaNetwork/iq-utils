@@ -9,8 +9,6 @@ import {
 import {
 	areContentLinksVerified,
 	countWords,
-} from "../lib/helpers/wiki.helpers";
-import {
 	validateEventWiki,
 	validateMediaContent,
 	validateMediaCount,
@@ -198,17 +196,17 @@ const BaseCategorySchema = z.object({
 });
 
 export const BaseEventsSchema = z.object({
-	id: z.string().optional(),
-	date: z.string(),
-	title: z.string().optional(),
-	type: EventTypeEnum,
-	description: z.string().optional(),
-	link: z.string().optional(),
-	multiDateStart: z.string().optional(),
-	multiDateEnd: z.string().optional(),
-	continent: z.string().optional(),
-	country: z.string().optional(),
-	action: z.enum(["DELETE", "EDIT", "CREATE"]).nullable().optional(),
+	id: z.string().optional().nullable(),
+	date: z.string().nullable(),
+	title: z.string().optional().nullable(),
+	type: EventTypeEnum.nullable(),
+	description: z.string().optional().nullable(),
+	link: z.string().optional().nullable(),
+	multiDateStart: z.string().optional().nullable(),
+	multiDateEnd: z.string().optional().nullable(),
+	continent: z.string().optional().nullable(),
+	country: z.string().optional().nullable(),
+	action: z.enum(["DELETE", "EDIT", "CREATE"]).optional().nullable(),
 });
 
 export type EventType = z.infer<typeof EventTypeEnum>;
@@ -278,15 +276,21 @@ export const WikiSchema = z
 			);
 			return !references?.value || references.value.length > 0;
 		}, "Please add at least one citation"),
-		events: z.array(BaseEventsSchema).optional(),
-		user: z.object({
-			id: z.string(),
-			profile: ProfileDataSchema.optional(),
-		}),
-		author: z.object({
-			id: z.string().nullable(),
-			profile: ProfileDataSchema.optional(),
-		}),
+		events: z.array(BaseEventsSchema).optional().nullable(),
+		user: z
+			.object({
+				id: z.string(),
+				profile: ProfileDataSchema.optional().nullable(),
+			})
+			.nullable()
+			.optional(),
+		author: z
+			.object({
+				id: z.string(),
+				profile: ProfileDataSchema.optional().nullable(),
+			})
+			.nullable()
+			.optional(),
 		language: LanguagesISOEnum.default(LanguagesISOEnum.Enum.en),
 		version: z.number().default(1),
 		hidden: z.boolean().default(false),
@@ -294,10 +298,20 @@ export const WikiSchema = z
 		views: z.number().optional().default(0),
 		linkedWikis: z
 			.object({
-				[LinkedWikiKeyEnum.Enum.founders]: z.array(z.string()).optional(),
-				[LinkedWikiKeyEnum.Enum.blockchains]: z.array(z.string()).optional(),
-				[LinkedWikiKeyEnum.Enum.speakers]: z.array(z.string()).optional(),
+				[LinkedWikiKeyEnum.Enum.blockchains]: z
+					.array(z.string())
+					.optional()
+					.nullable(),
+				[LinkedWikiKeyEnum.Enum.founders]: z
+					.array(z.string())
+					.optional()
+					.nullable(),
+				[LinkedWikiKeyEnum.Enum.speakers]: z
+					.array(z.string())
+					.optional()
+					.nullable(),
 			})
+			.nullable()
 			.optional()
 			.default({}),
 		founderWikis: z.array(WikiReference).optional().default([]),
