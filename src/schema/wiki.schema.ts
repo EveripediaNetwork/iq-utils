@@ -212,10 +212,6 @@ export const BaseEventsSchema = z.object({
 export type EventType = z.infer<typeof EventTypeEnum>;
 export type BaseEvents = z.infer<typeof BaseEventsSchema>;
 
-const BaseTagSchema = z.object({
-	id: TagEnum,
-});
-
 const WikiReference = z.object({
 	id: z.string(),
 	title: z.string(),
@@ -261,7 +257,15 @@ export const WikiSchema = z
 		categories: z
 			.array(BaseCategorySchema)
 			.min(1, "Add one category to continue"),
-		tags: z.array(BaseTagSchema),
+		tags: z.array(z.object({ id: z.string() })).transform((tags) =>
+			tags.filter((tag) => {
+				const result = TagEnum.safeParse(tag.id);
+				if (!result.success) {
+					console.error(`Invalid tag ID: ${tag.id}`);
+				}
+				return result.success;
+			}),
+		),
 		media: z
 			.array(MediaSchema)
 			.max(MAX_MEDIA_COUNT)
@@ -332,7 +336,8 @@ export const WikiSchema = z
 			path: ["events"],
 		},
 	);
-export type Wiki = z.output<typeof WikiSchema>;
+
+export type Wiki = z.infer<typeof WikiSchema>;
 
 export const ReferenceSchema = z.object({
 	id: z.string(),
