@@ -1,9 +1,12 @@
+import type { z } from "zod";
+
 import { IPFS_HASH_LENGTH, MAX_MEDIA_COUNT } from "../../data/constants";
 import {
 	CommonMetaIdsEnum,
 	type Media,
 	MediaSourceEnum,
 	MediaTypeEnum,
+	type TagEnum,
 } from "../../schema/wiki.schema";
 import { whiteListedDomains, whiteListedLinkNames } from "../../types/wiki";
 /**
@@ -62,7 +65,7 @@ export const validateMediaCount = (media: Media[]) => {
 };
 
 export const validateEventWiki = (wiki: {
-	tags: { id: string }[];
+	tags: { id: z.infer<typeof TagEnum> }[];
 	metadata: { id: string; value?: string }[];
 	events?: unknown[];
 }): boolean => {

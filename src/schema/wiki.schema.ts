@@ -158,12 +158,12 @@ const ProfileLinksSchema = z.object({
 });
 
 const ProfileDataSchema = z.object({
-	id: z.string().nullish(),
-	username: z.string().nullish(),
-	bio: z.string().nullish(),
-	links: z.array(ProfileLinksSchema).nullish(),
-	banner: z.string().nullish(),
-	avatar: z.string().nullish(),
+	id: z.string().nullable(),
+	username: z.string().nullable(),
+	bio: z.string().nullable(),
+	links: z.array(ProfileLinksSchema).nullable(),
+	banner: z.string().nullable(),
+	avatar: z.string().nullable(),
 });
 
 export const ImageSchema = z.object({
@@ -257,11 +257,34 @@ export const WikiSchema = z
 		categories: z
 			.array(BaseCategorySchema)
 			.min(1, "Add one category to continue"),
-		tags: z.array(z.object({ id: z.string() })).transform((tags) =>
-			tags.map((tag) => ({
-				id: TagEnum.parse(tag.id),
-			})),
-		),
+		tags: z
+			.array(
+				z.object({
+					id: z.string(),
+				}),
+			)
+			.transform((tags) =>
+				tags.map((tag) => ({
+					id: TagEnum.parse(tag.id),
+				})),
+			)
+			.refine(
+				(tags) => {
+					const invalidTags = tags.filter(
+						(tag) => !TagEnum.safeParse(tag.id).success,
+					);
+					if (invalidTags.length > 0) {
+						throw new Error(
+							`Invalid tag(s) found: ${invalidTags.map((tag) => tag.id).join(", ")}`,
+						);
+					}
+					return true;
+				},
+				{
+					message: "Invalid tag(s) found",
+				},
+			),
+
 		media: z
 			.array(MediaSchema)
 			.max(MAX_MEDIA_COUNT)
@@ -277,20 +300,14 @@ export const WikiSchema = z
 			return !references?.value || references.value.length > 0;
 		}, "Please add at least one citation"),
 		events: z.array(BaseEventsSchema).optional().nullable(),
-		user: z
-			.object({
-				id: z.string(),
-				profile: ProfileDataSchema.optional().nullable(),
-			})
-			.nullable()
-			.optional(),
-		author: z
-			.object({
-				id: z.string(),
-				profile: ProfileDataSchema.optional().nullable(),
-			})
-			.nullable()
-			.optional(),
+		user: z.object({
+			id: z.string(),
+			profile: ProfileDataSchema.nullable(),
+		}),
+		author: z.object({
+			id: z.string(),
+			profile: ProfileDataSchema.nullable(),
+		}),
 		language: LanguagesISOEnum.default(LanguagesISOEnum.Enum.en),
 		version: z.number().default(1),
 		hidden: z.boolean().default(false),
