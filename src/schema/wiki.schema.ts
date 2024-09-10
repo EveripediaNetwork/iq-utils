@@ -258,13 +258,9 @@ export const WikiSchema = z
 			.array(BaseCategorySchema)
 			.min(1, "Add one category to continue"),
 		tags: z.array(z.object({ id: z.string() })).transform((tags) =>
-			tags.filter((tag) => {
-				const result = TagEnum.safeParse(tag.id);
-				if (!result.success) {
-					console.error(`Invalid tag ID: ${tag.id}`);
-				}
-				return result.success;
-			}),
+			tags.map((tag) => ({
+				id: TagEnum.parse(tag.id),
+			})),
 		),
 		media: z
 			.array(MediaSchema)
@@ -325,7 +321,7 @@ export const WikiSchema = z
 		(arg) =>
 			validateEventWiki(
 				arg as {
-					tags: { id: string }[];
+					tags: { id: z.infer<typeof TagEnum> }[];
 					metadata: { id: string; value?: string }[];
 					events?: unknown[];
 				},
