@@ -7,14 +7,12 @@ import {
 	WIKI_TITLE_MAX_LENGTH,
 } from "../data/constants";
 import {
-	CommonMetaIds,
-	MediaSource,
-	MediaType,
+	CommonMetaIdsEnum,
+	MediaSourceEnum,
+	MediaTypeEnum,
 	type Wiki,
-	// eslint-disable-next-line sort-imports
-	whiteListedDomains,
-	whiteListedLinkNames,
-} from "../types/wiki";
+} from "../schema/wiki.schema";
+import { whiteListedDomains, whiteListedLinkNames } from "../types/wiki";
 
 /**
  * Counts the number of words in a given string.
@@ -79,13 +77,13 @@ export const isMediaValid = (wiki: Wiki) => {
 
 	const isMediaContentValid = wiki.media.every((media) => {
 		if (
-			media.source === MediaSource.IPFS_IMG ||
-			media.source === MediaSource.IPFS_VID
+			media.source === MediaSourceEnum.Enum.IPFS_IMG ||
+			media.source === MediaSourceEnum.Enum.IPFS_VID
 		) {
 			return media.id.length === IPFS_HASH_LENGTH;
 		}
 
-		if (media.source === MediaSource.YOUTUBE) {
+		if (media.source === MediaSourceEnum.Enum.YOUTUBE) {
 			const youtubePattern =
 				/^.*(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/|watch\?v=)([^#&?]*).*/;
 			return (
@@ -94,15 +92,17 @@ export const isMediaValid = (wiki: Wiki) => {
 			);
 		}
 
-		if (media.source === MediaSource.VIMEO) {
+		if (media.source === MediaSourceEnum.Enum.VIMEO) {
 			return media.id === `https://vimeo.com/${media.name}`;
 		}
 
-		return media.type ? Object.values(MediaType).includes(media.type) : true;
+		return media.type
+			? Object.values(MediaTypeEnum).includes(media.type)
+			: true;
 	});
 
 	const iconMediaCount = wiki.media.filter(
-		(media) => media.type === MediaType.ICON,
+		(media) => media.type === MediaTypeEnum.Enum.ICON,
 	).length;
 
 	return (
@@ -129,8 +129,9 @@ export const isAnyMediaUploading = (wiki: Wiki) =>
 export const isEventUrlMissing = (wiki: Wiki) => {
 	if (wiki.tags.some((tag) => tag.id === "Events")) {
 		const referencesData =
-			wiki.metadata.find((meta) => meta.id === CommonMetaIds.REFERENCES)
-				?.value || "[]";
+			wiki.metadata.find(
+				(meta) => meta.id === CommonMetaIdsEnum.Enum.references,
+			)?.value || "[]";
 		const references = JSON.parse(referencesData);
 		return !references.some(
 			(item: { description: string }) =>
@@ -163,7 +164,7 @@ export const isSummaryTooLong = (wiki: Wiki) =>
  */
 export const hasNoCitations = (wiki: Wiki) => {
 	const references = wiki.metadata.find(
-		(meta) => meta.id === CommonMetaIds.REFERENCES,
+		(meta) => meta.id === CommonMetaIdsEnum.Enum.references,
 	);
 	return !references?.value || references.value.length === 0;
 };
