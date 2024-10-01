@@ -25,3 +25,15 @@ export const IDEAL_MEDIA_COUNT = 5;
 export const IDEAL_TAGS_COUNT = 3;
 export const IDEAL_SUMMARY_LENGTH = 100;
 export const IDEAL_SOCIAL_MEDIA_COUNT = 4;
+
+export const WHITELISTED_DOMAINS = [
+	"youtube.com/watch",
+	"youtu.be",
+	"vimeo.com",
+	"alpha.everipedia.org/wiki",
+	"beta.everipedia.org/wiki",
+	"iq.wiki/wiki",
+	"ipfs.everipedia.org/ipfs",
+];
+
+export const WHITELISTED_LINK_NAMES = ["YOUTUBE@VID", "DUNE@EMBED"];

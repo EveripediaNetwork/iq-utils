@@ -16,11 +16,7 @@ import {
 	SUMMARY_SCORE_WEIGHT,
 	TAGS_SCORE_WEIGHT,
 } from "../data/constants";
-import {
-	CommonMetaIdsEnum,
-	type Wiki,
-	WikiPossibleSocialsList,
-} from "../schema/wiki.schema";
+import { CommonMetaIds, type Wiki } from "../schema";
 
 const contentQuality = (wordCount: number): number => {
 	const scoreMin = 0.0;
@@ -114,7 +110,7 @@ const getWikiInternalLinks = (content: string): number => {
 
 const getWikiCitationLinks = (wiki: Wiki) => {
 	const rawWikiReferences = wiki.metadata.find(
-		(m) => m.id === CommonMetaIdsEnum.Enum.references,
+		(m) => m.id === CommonMetaIds.Enum.references,
 	)?.value;
 
 	if (
@@ -133,9 +129,7 @@ const getSocialsCount = (wiki: Wiki): number => {
 	let socialsCount = 0;
 	for (const meta of wiki.metadata) {
 		if (
-			WikiPossibleSocialsList.includes(
-				meta.id as keyof typeof CommonMetaIdsEnum.enum,
-			)
+			CommonMetaIds.options.includes(meta.id as keyof typeof CommonMetaIds.enum)
 		) {
 			if (meta.value) {
 				socialsCount += 1;
