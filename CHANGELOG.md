@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 1.0.1
+
+### Patch Changes
+
+- 6f776ed: Exports wiki schema
+
 ## 1.0.0
 
 ### Major Changes
