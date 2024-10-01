@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.0
+
+### Major Changes
+
+- 589e5ea: Simplifies the file structure and variable and method function names from exports
+
 ## 1.0.1
 
 ### Patch Changes
