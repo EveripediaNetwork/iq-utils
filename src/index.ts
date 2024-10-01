@@ -4,3 +4,4 @@ export * from "./lib/checkWikiValidity";
 export * from "./types/wiki";
 export * from "./types/wikiBuilder";
 export * from "./data/constants";
+export * from "./schema/wiki.schema"
