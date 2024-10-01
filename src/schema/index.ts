@@ -12,21 +12,20 @@ import {
 	validateEventWiki,
 	validateMediaContent,
 	validateMediaCount,
-} from "../lib/helpers/wiki.helpers";
+} from "../lib/wiki-helpers";
 
 /**
  * ========================
  * ===== Enum Schemas =====
  * ========================
  */
-export const MediaTypeEnum = z.enum(["GALLERY", "ICON"]);
-export const MediaSourceEnum = z.enum([
-	"IPFS_IMG",
-	"VIMEO",
-	"YOUTUBE",
-	"IPFS_VID",
-]);
-export const CommonMetaIdsEnum = z.enum([
+export const MediaType = z.enum(["GALLERY", "ICON"]);
+export type MediaType = z.infer<typeof MediaType>;
+
+export const MediaSource = z.enum(["IPFS_IMG", "VIMEO", "YOUTUBE", "IPFS_VID"]);
+export type MediaSource = z.infer<typeof MediaSource>;
+
+export const CommonMetaIds = z.enum([
 	"references",
 	"website",
 	"contract_url",
@@ -67,11 +66,9 @@ export const CommonMetaIdsEnum = z.enum([
 	"explorer_injective_profile",
 	"blastscan_profile",
 ]);
+export type CommonMetaIds = z.infer<typeof CommonMetaIds>;
 
-export const WikiPossibleSocialsList: (keyof typeof CommonMetaIdsEnum.enum)[] =
-	Object.values(CommonMetaIdsEnum.enum);
-
-const EditSpecificMetaIdsEnum = z.enum([
+export const EditSpecificMetaIds = z.enum([
 	"previous_cid",
 	"commit-message",
 	"words-changed",
@@ -79,6 +76,7 @@ const EditSpecificMetaIdsEnum = z.enum([
 	"blocks-changed",
 	"wiki-score",
 ]);
+export type EditSpecificMetaIds = z.infer<typeof EditSpecificMetaIds>;
 
 export const ValidatorCodes = z.enum([
 	"VALID_WIKI",
@@ -97,11 +95,18 @@ export const ValidatorCodes = z.enum([
 	"LINKED_WIKIS",
 	"EVENTS_ERROR",
 ]);
+export type ValidatorCodes = z.infer<typeof ValidatorCodes>;
 
-const LanguagesISOEnum = z.enum(["en", "es", "zh", "ko"]);
-const LinkedWikiKeyEnum = z.enum(["founders", "blockchains", "speakers"]);
-const EventTypeEnum = z.enum(["CREATED", "DEFAULT", "MULTIDATE"]);
-export const TagEnum = z.enum([
+const LanguagesISO = z.enum(["en", "es", "zh", "ko"]);
+export type LanguagesISO = z.infer<typeof LanguagesISO>;
+
+const LinkedWikiKey = z.enum(["founders", "blockchains", "speakers"]);
+export type LinkedWikiKey = z.infer<typeof LinkedWikiKey>;
+
+const EventType = z.enum(["CREATED", "DEFAULT", "MULTIDATE"]);
+export type EventType = z.infer<typeof EventType>;
+
+export const Tag = z.enum([
 	"Artists",
 	"AI",
 	"BinanceSmartChain",
@@ -134,7 +139,9 @@ export const TagEnum = z.enum([
 	"Stablecoins",
 	"Venture",
 ]);
-export const CategoryEnum = z.enum([
+export type Tag = z.infer<typeof Tag>;
+
+export const Category = z.enum([
 	"nfts",
 	"defi",
 	"exchanges",
@@ -144,6 +151,7 @@ export const CategoryEnum = z.enum([
 	"dapps",
 	"organizations",
 ]);
+export type Category = z.infer<typeof Category>;
 
 /**
  * ==============================
@@ -151,55 +159,57 @@ export const CategoryEnum = z.enum([
  * ==============================
  */
 
-const ProfileLinksSchema = z.object({
+const ProfileLinks = z.object({
 	twitter: z.string().nullable(),
 	website: z.string().nullable(),
 	instagram: z.string().nullable(),
 });
+export type ProfileLinks = z.infer<typeof ProfileLinks>;
 
-const ProfileDataSchema = z.object({
+const ProfileData = z.object({
 	id: z.string().nullable(),
 	username: z.string().nullable(),
 	bio: z.string().nullable(),
-	links: z.array(ProfileLinksSchema).nullable(),
+	links: z.array(ProfileLinks).nullable(),
 	banner: z.string().nullable(),
 	avatar: z.string().nullable(),
 });
+export type ProfileData = z.infer<typeof ProfileData>;
 
-export const ImageSchema = z.object({
+export const Image = z.object({
 	id: z.string(),
 	type: z.string(),
 });
+export type Image = z.infer<typeof Image>;
 
-export type Image = z.infer<typeof ImageSchema>;
-
-export const MediaSchema = z.object({
+export const Media = z.object({
 	id: z.string(),
 	size: z.string().nullish(),
 	name: z.string().nullish(),
-	type: MediaTypeEnum.nullish(),
+	type: MediaType.nullish(),
 	caption: z.string().nullish(),
 	thumbnail: z.string().nullish(),
-	source: MediaSourceEnum,
+	source: MediaSource,
 });
+export type Media = z.infer<typeof Media>;
 
-export type Media = z.infer<typeof MediaSchema>;
-
-const MetaDataSchema = z.object({
-	id: z.union([CommonMetaIdsEnum, EditSpecificMetaIdsEnum]),
+const MetaData = z.object({
+	id: z.union([CommonMetaIds, EditSpecificMetaIds]),
 	value: z.any(),
 });
+export type MetaData = z.infer<typeof MetaData>;
 
-const BaseCategorySchema = z.object({
-	id: CategoryEnum,
+const BaseCategory = z.object({
+	id: Category,
 	title: z.string(),
 });
+export type BaseCategory = z.infer<typeof BaseCategory>;
 
-export const BaseEventsSchema = z.object({
+export const BaseEvents = z.object({
 	id: z.string().optional().nullable(),
 	date: z.string().nullable(),
 	title: z.string().optional().nullable(),
-	type: EventTypeEnum.nullable(),
+	type: EventType.nullable(),
 	description: z.string().optional().nullable(),
 	link: z.string().optional().nullable(),
 	multiDateStart: z.string().optional().nullable(),
@@ -208,14 +218,13 @@ export const BaseEventsSchema = z.object({
 	country: z.string().optional().nullable(),
 	action: z.enum(["DELETE", "EDIT", "CREATE"]).optional().nullable(),
 });
-
-export type EventType = z.infer<typeof EventTypeEnum>;
-export type BaseEvents = z.infer<typeof BaseEventsSchema>;
+export type BaseEvents = z.infer<typeof BaseEvents>;
 
 const WikiReference = z.object({
 	id: z.string(),
 	title: z.string(),
 });
+export type WikiReference = z.infer<typeof WikiReference>;
 
 /**
  * ========================
@@ -223,7 +232,7 @@ const WikiReference = z.object({
  * ========================
  */
 
-export const WikiSchema = z
+export const Wiki = z
 	.object({
 		id: z.string(),
 		title: z
@@ -252,11 +261,9 @@ export const WikiSchema = z
 				`Summary exceeds maximum limit of ${WIKI_SUMMARY_MAX_LENGTH}`,
 			),
 		images: z
-			.array(ImageSchema)
+			.array(Image)
 			.min(1, "Add a main image on the right column to continue"),
-		categories: z
-			.array(BaseCategorySchema)
-			.min(1, "Add one category to continue"),
+		categories: z.array(BaseCategory).min(1, "Add one category to continue"),
 		tags: z
 			.array(
 				z.object({
@@ -265,13 +272,13 @@ export const WikiSchema = z
 			)
 			.transform((tags) =>
 				tags.map((tag) => ({
-					id: TagEnum.parse(tag.id),
+					id: Tag.parse(tag.id),
 				})),
 			)
 			.refine(
 				(tags) => {
 					const invalidTags = tags.filter(
-						(tag) => !TagEnum.safeParse(tag.id).success,
+						(tag) => !Tag.safeParse(tag.id).success,
 					);
 					if (invalidTags.length > 0) {
 						throw new Error(
@@ -286,44 +293,44 @@ export const WikiSchema = z
 			),
 
 		media: z
-			.array(MediaSchema)
+			.array(Media)
 			.max(MAX_MEDIA_COUNT)
 			.refine((media) => {
 				if (!media) return true;
 				return validateMediaContent(media) && validateMediaCount(media);
 			}, "Media is invalid")
 			.optional(),
-		metadata: z.array(MetaDataSchema).refine((metadata) => {
+		metadata: z.array(MetaData).refine((metadata) => {
 			const references = metadata.find(
-				(meta) => meta.id === CommonMetaIdsEnum.Enum.references,
+				(meta) => meta.id === CommonMetaIds.Enum.references,
 			);
 			return !references?.value || references.value.length > 0;
 		}, "Please add at least one citation"),
-		events: z.array(BaseEventsSchema).optional().nullable(),
+		events: z.array(BaseEvents).optional().nullable(),
 		user: z.object({
 			id: z.string(),
-			profile: ProfileDataSchema.nullable(),
+			profile: ProfileData.nullable(),
 		}),
 		author: z.object({
 			id: z.string(),
-			profile: ProfileDataSchema.nullable(),
+			profile: ProfileData.nullable(),
 		}),
-		language: LanguagesISOEnum.default(LanguagesISOEnum.Enum.en),
+		language: LanguagesISO.default(LanguagesISO.Enum.en),
 		version: z.number().default(1),
 		hidden: z.boolean().default(false),
 		promoted: z.number().default(0),
 		views: z.number().optional().default(0),
 		linkedWikis: z
 			.object({
-				[LinkedWikiKeyEnum.Enum.blockchains]: z
+				[LinkedWikiKey.Enum.blockchains]: z
 					.array(z.string())
 					.optional()
 					.nullable(),
-				[LinkedWikiKeyEnum.Enum.founders]: z
+				[LinkedWikiKey.Enum.founders]: z
 					.array(z.string())
 					.optional()
 					.nullable(),
-				[LinkedWikiKeyEnum.Enum.speakers]: z
+				[LinkedWikiKey.Enum.speakers]: z
 					.array(z.string())
 					.optional()
 					.nullable(),
@@ -338,7 +345,7 @@ export const WikiSchema = z
 		(arg) =>
 			validateEventWiki(
 				arg as {
-					tags: { id: z.infer<typeof TagEnum> }[];
+					tags: { id: z.infer<typeof Tag> }[];
 					metadata: { id: string; value?: string }[];
 					events?: unknown[];
 				},
@@ -349,14 +356,12 @@ export const WikiSchema = z
 			path: ["events"],
 		},
 	);
+export type Wiki = z.infer<typeof Wiki>;
 
-export type Wiki = z.infer<typeof WikiSchema>;
-
-export const ReferenceSchema = z.object({
+export const Reference = z.object({
 	id: z.string(),
 	description: z.string(),
 	timestamp: z.number(),
 	url: z.string(),
 });
-
-export type Reference = z.infer<typeof ReferenceSchema>;
+export type Reference = z.infer<typeof Reference>;

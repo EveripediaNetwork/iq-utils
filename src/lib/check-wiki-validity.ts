@@ -5,14 +5,10 @@ import {
 	WIKI_CONTENT_MIN_WORDS,
 	WIKI_SUMMARY_MAX_LENGTH,
 	WIKI_TITLE_MAX_LENGTH,
+	WHITELISTED_DOMAINS,
+	WHITELISTED_LINK_NAMES,
 } from "../data/constants";
-import {
-	CommonMetaIdsEnum,
-	MediaSourceEnum,
-	MediaTypeEnum,
-	type Wiki,
-} from "../schema/wiki.schema";
-import { whiteListedDomains, whiteListedLinkNames } from "../types/wiki";
+import { CommonMetaIds, MediaSource, MediaType, type Wiki } from "../schema";
 
 /**
  * Counts the number of words in a given string.
@@ -50,7 +46,7 @@ export const areContentLinksVerified = (content: string) => {
 			if (
 				linkText &&
 				linkUrl &&
-				whiteListedLinkNames.includes(linkText) &&
+				WHITELISTED_LINK_NAMES.includes(linkText) &&
 				!isValidUrl(linkUrl)
 			) {
 				return true;
@@ -58,7 +54,7 @@ export const areContentLinksVerified = (content: string) => {
 
 			if (linkUrl && !linkUrl.startsWith("#")) {
 				const validDomainPattern = new RegExp(
-					`^https?://(www\\.)?(${whiteListedDomains.join("|")})`,
+					`^https?://(www\\.)?(${WHITELISTED_DOMAINS.join("|")})`,
 				);
 				return validDomainPattern.test(linkUrl);
 			}
@@ -77,13 +73,13 @@ export const isMediaValid = (wiki: Wiki) => {
 
 	const isMediaContentValid = wiki.media.every((media) => {
 		if (
-			media.source === MediaSourceEnum.Enum.IPFS_IMG ||
-			media.source === MediaSourceEnum.Enum.IPFS_VID
+			media.source === MediaSource.Enum.IPFS_IMG ||
+			media.source === MediaSource.Enum.IPFS_VID
 		) {
 			return media.id.length === IPFS_HASH_LENGTH;
 		}
 
-		if (media.source === MediaSourceEnum.Enum.YOUTUBE) {
+		if (media.source === MediaSource.Enum.YOUTUBE) {
 			const youtubePattern =
 				/^.*(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/|watch\?v=)([^#&?]*).*/;
 			return (
@@ -92,17 +88,15 @@ export const isMediaValid = (wiki: Wiki) => {
 			);
 		}
 
-		if (media.source === MediaSourceEnum.Enum.VIMEO) {
+		if (media.source === MediaSource.Enum.VIMEO) {
 			return media.id === `https://vimeo.com/${media.name}`;
 		}
 
-		return media.type
-			? Object.values(MediaTypeEnum).includes(media.type)
-			: true;
+		return media.type ? MediaType.options.includes(media.type) : true;
 	});
 
 	const iconMediaCount = wiki.media.filter(
-		(media) => media.type === MediaTypeEnum.Enum.ICON,
+		(media) => media.type === MediaType.Enum.ICON,
 	).length;
 
 	return (
@@ -129,9 +123,8 @@ export const isAnyMediaUploading = (wiki: Wiki) =>
 export const isEventUrlMissing = (wiki: Wiki) => {
 	if (wiki.tags.some((tag) => tag.id === "Events")) {
 		const referencesData =
-			wiki.metadata.find(
-				(meta) => meta.id === CommonMetaIdsEnum.Enum.references,
-			)?.value || "[]";
+			wiki.metadata.find((meta) => meta.id === CommonMetaIds.Enum.references)
+				?.value || "[]";
 		const references = JSON.parse(referencesData);
 		return !references.some(
 			(item: { description: string }) =>
@@ -164,7 +157,7 @@ export const isSummaryTooLong = (wiki: Wiki) =>
  */
 export const hasNoCitations = (wiki: Wiki) => {
 	const references = wiki.metadata.find(
-		(meta) => meta.id === CommonMetaIdsEnum.Enum.references,
+		(meta) => meta.id === CommonMetaIds.Enum.references,
 	);
 	return !references?.value || references.value.length === 0;
 };
