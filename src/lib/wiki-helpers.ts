@@ -8,9 +8,11 @@ import {
 } from "../data/constants";
 import {
 	CommonMetaIds,
+	EditSpecificMetaIds,
 	type Media,
 	MediaSource,
 	MediaType,
+	type MetaData,
 	type Tag,
 } from "../schema";
 import axios from "axios";
@@ -170,6 +172,25 @@ export async function getExplorers() {
 	});
 
 	return data;
+}
+
+export async function validateMetadata(metadata: MetaData[]) {
+	const explorers = await getExplorers();
+	const validIds = new Set([
+		...CommonMetaIds.options,
+		...EditSpecificMetaIds.options,
+		...explorers.map((e) => e.id),
+	]);
+
+	return metadata.every(
+		(meta) =>
+			validIds.has(meta.id) &&
+			(!explorers.some((e) => e.id === meta.id) ||
+				(isValidUrl(meta.value) &&
+					new URL(meta.value).origin ===
+						new URL(explorers.find((e) => e.id === meta.id)?.baseUrl || "")
+							.origin)),
+	);
 }
 
 export interface Explorer {

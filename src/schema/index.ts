@@ -14,6 +14,7 @@ import {
 	validateEventWiki,
 	validateMediaContent,
 	validateMediaCount,
+	validateMetadata,
 } from "../lib/wiki-helpers";
 
 /**
@@ -262,25 +263,7 @@ export const Wiki = z
 				);
 				return !references?.value || references.value.length > 0;
 			}, "Please add at least one citation")
-			.refine(async (metadata) => {
-				const explorers = await getExplorers();
-				const validIds = new Set([
-					...CommonMetaIds.options,
-					...EditSpecificMetaIds.options,
-					...explorers.map((e) => e.id),
-				]);
-
-				return metadata.every(
-					(meta) =>
-						validIds.has(meta.id) &&
-						(!explorers.some((e) => e.id === meta.id) ||
-							(isValidUrl(meta.value) &&
-								new URL(meta.value).origin ===
-									new URL(
-										explorers.find((e) => e.id === meta.id)?.baseUrl || "",
-									).origin)),
-				);
-			}, "Invalid metadata Ids or explorer metadata"),
+			.refine(validateMetadata, "Invalid metadata Ids or explorer metadata"),
 		events: z.array(BaseEvents).nullish(),
 		user: z.object({
 			id: z.string(),
