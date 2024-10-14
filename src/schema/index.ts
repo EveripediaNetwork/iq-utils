@@ -46,36 +46,11 @@ export const CommonMetaIds = z.enum([
 	"medium_profile",
 	"mirror_profile",
 	"tiktok_profile",
-	"etherscan_profile",
-	"arbiscan_profile",
-	"polygonscan_profile",
-	"bscscan_profile",
-	"optimistic_etherscan_profile",
-	"basescan_profile",
-	"ftmscan_profile",
-	"solscan_profile",
-	"avascan_profile",
-	"nearblocks_profile",
-	"troscan_profile",
-	"xrpscan_profile",
-	"kavascan_profile",
-	"tonscan_profile",
-	"celoscan_profile",
-	"cronoscan_profile",
-	"zkscan_profile",
 	"explorer_injective_profile",
-	"blastscan_profile",
 ]);
 export type CommonMetaIds = z.infer<typeof CommonMetaIds>;
 
-export const EditSpecificMetaIds = z.enum([
-	"previous_cid",
-	"commit-message",
-	"words-changed",
-	"percent-changed",
-	"blocks-changed",
-	"wiki-score",
-]);
+export const EditSpecificMetaIds = z.enum(["previous_cid", "commit-message"]);
 export type EditSpecificMetaIds = z.infer<typeof EditSpecificMetaIds>;
 
 export const ValidatorCodes = z.enum([
@@ -206,17 +181,17 @@ const BaseCategory = z.object({
 export type BaseCategory = z.infer<typeof BaseCategory>;
 
 export const BaseEvents = z.object({
-	id: z.string().optional().nullable(),
+	id: z.string().nullish(),
 	date: z.string().nullable(),
-	title: z.string().optional().nullable(),
+	title: z.string().nullish(),
 	type: EventType.nullable(),
-	description: z.string().optional().nullable(),
-	link: z.string().optional().nullable(),
-	multiDateStart: z.string().optional().nullable(),
-	multiDateEnd: z.string().optional().nullable(),
-	continent: z.string().optional().nullable(),
-	country: z.string().optional().nullable(),
-	action: z.enum(["DELETE", "EDIT", "CREATE"]).optional().nullable(),
+	description: z.string().nullish(),
+	link: z.string().nullish(),
+	multiDateStart: z.string().nullish(),
+	multiDateEnd: z.string().nullish(),
+	continent: z.string().nullish(),
+	country: z.string().nullish(),
+	action: z.enum(["DELETE", "EDIT", "CREATE"]).nullish(),
 });
 export type BaseEvents = z.infer<typeof BaseEvents>;
 
@@ -242,7 +217,6 @@ export const Wiki = z
 				WIKI_TITLE_MAX_LENGTH,
 				`Title should be less than ${WIKI_TITLE_MAX_LENGTH} characters`,
 			),
-		ipfs: z.string().optional(),
 		content: z
 			.string()
 			.min(1, "Add a Content section to continue")
@@ -291,7 +265,6 @@ export const Wiki = z
 					message: "Invalid tag(s) found",
 				},
 			),
-
 		media: z
 			.array(Media)
 			.max(MAX_MEDIA_COUNT)
@@ -306,40 +279,23 @@ export const Wiki = z
 			);
 			return !references?.value || references.value.length > 0;
 		}, "Please add at least one citation"),
-		events: z.array(BaseEvents).optional().nullable(),
+		events: z.array(BaseEvents).nullish(),
 		user: z.object({
 			id: z.string(),
-			profile: ProfileData.nullable(),
 		}),
 		author: z.object({
 			id: z.string(),
-			profile: ProfileData.nullable(),
 		}),
 		language: LanguagesISO.default(LanguagesISO.Enum.en),
 		version: z.number().default(1),
-		hidden: z.boolean().default(false),
-		promoted: z.number().default(0),
-		views: z.number().optional().default(0),
 		linkedWikis: z
 			.object({
-				[LinkedWikiKey.Enum.blockchains]: z
-					.array(z.string())
-					.optional()
-					.nullable(),
-				[LinkedWikiKey.Enum.founders]: z
-					.array(z.string())
-					.optional()
-					.nullable(),
-				[LinkedWikiKey.Enum.speakers]: z
-					.array(z.string())
-					.optional()
-					.nullable(),
+				[LinkedWikiKey.Enum.blockchains]: z.array(z.string()).nullish(),
+				[LinkedWikiKey.Enum.founders]: z.array(z.string()).nullish(),
+				[LinkedWikiKey.Enum.speakers]: z.array(z.string()).nullish(),
 			})
-			.nullable()
-			.optional()
+			.nullish()
 			.default({}),
-		founderWikis: z.array(WikiReference).optional().default([]),
-		blockchainWikis: z.array(WikiReference).optional().default([]),
 	})
 	.refine(
 		(arg) =>
