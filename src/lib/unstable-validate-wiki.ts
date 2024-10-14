@@ -79,11 +79,12 @@ async function getExplorers() {
 		},
 	});
 
+	// TODO: make sure to fetch all explorers here. currently only fetching first 30 explorers
 	const { data } = await client.post<Explorer[]>("", {
 		query,
 		variables: {
 			offset: 0,
-			limit: 50,
+			limit: 30,
 		},
 	});
 
