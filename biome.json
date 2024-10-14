@@ -5,5 +5,12 @@
 	},
 	"files": {
 		"ignore": ["**/node_modules", "dist", "pnpm-lock.yaml", ".vscode/"]
+	},
+	"linter": {
+		"rules": {
+			"suspicious": {
+				"noExplicitAny": "warn"
+			}
+		}
 	}
 }

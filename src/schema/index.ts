@@ -7,14 +7,13 @@ import {
 	WIKI_TITLE_MAX_LENGTH,
 } from "../data/constants";
 import {
-	areContentLinksVerified,
-	countWords,
-	getExplorers,
-	isValidUrl,
-	validateEventWiki,
-	validateMediaContent,
-	validateMediaCount,
-	validateMetadata,
+	areMetadataAndExplorerValid,
+	containsOnlyVerifiedLinks,
+	hasAtLeastOneReference,
+	hasMinimumWordCount,
+	isEventWikiValid,
+	isMediaContentAndCountValid,
+	transformAndFilterTags,
 } from "../lib/wiki-helpers";
 
 /**
@@ -224,11 +223,11 @@ export const Wiki = z
 			.string()
 			.min(1, "Add a Content section to continue")
 			.refine(
-				(content) => countWords(content) >= WIKI_CONTENT_MIN_WORDS,
+				hasMinimumWordCount,
 				`Add a minimum of ${WIKI_CONTENT_MIN_WORDS} words in the content section to continue`,
 			)
 			.refine(
-				areContentLinksVerified,
+				containsOnlyVerifiedLinks,
 				"Please remove all external links from the content",
 			),
 		summary: z
@@ -241,36 +240,24 @@ export const Wiki = z
 			.array(Image)
 			.min(1, "Add a main image on the right column to continue"),
 		categories: z.array(BaseCategory).min(1, "Add one category to continue"),
-		tags: z.array(z.object({ id: z.string() })).transform((tags) =>
-			tags
-				.map((tag) => ({ id: Tag.safeParse(tag.id) }))
-				.filter((result) => result.id.success)
-				.map((result) => ({ id: result.id.data })),
-		),
+		tags: z
+			.array(z.object({ id: z.string() }))
+			.transform(transformAndFilterTags),
 		media: z
 			.array(Media)
 			.max(MAX_MEDIA_COUNT)
-			.refine((media) => {
-				if (!media) return true;
-				return validateMediaContent(media) && validateMediaCount(media);
-			}, "Media is invalid")
+			.refine(isMediaContentAndCountValid, "Media is invalid")
 			.optional(),
 		metadata: z
 			.array(MetaData)
-			.refine((metadata) => {
-				const references = metadata.find(
-					(meta) => meta.id === CommonMetaIds.Enum.references,
-				);
-				return !references?.value || references.value.length > 0;
-			}, "Please add at least one citation")
-			.refine(validateMetadata, "Invalid metadata Ids or explorer metadata"),
+			.refine(hasAtLeastOneReference, "Please add at least one citation")
+			.refine(
+				areMetadataAndExplorerValid,
+				"Invalid metadata Ids or explorer metadata",
+			),
 		events: z.array(BaseEvents).nullish(),
-		user: z.object({
-			id: z.string(),
-		}),
-		author: z.object({
-			id: z.string(),
-		}),
+		user: z.object({ id: z.string() }),
+		author: z.object({ id: z.string() }),
 		language: LanguagesISO.default(LanguagesISO.Enum.en),
 		version: z.number().default(1),
 		linkedWikis: z
@@ -282,21 +269,12 @@ export const Wiki = z
 			.nullish()
 			.default({}),
 	})
-	.refine(
-		(arg) =>
-			validateEventWiki(
-				arg as {
-					tags: { id: z.infer<typeof Tag> }[];
-					metadata: { id: string; value?: string }[];
-					events?: unknown[];
-				},
-			),
-		{
-			message:
-				"Event wikis must have an event link citation and at least one event date",
-			path: ["events"],
-		},
-	);
+	.refine(isEventWikiValid, {
+		message:
+			"Event wikis must have an event link citation and at least one event date",
+		path: ["events"],
+	});
+
 export type Wiki = z.infer<typeof Wiki>;
 
 export const Reference = z.object({
