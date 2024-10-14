@@ -9,7 +9,6 @@ import {
 import {
 	areContentLinksVerified,
 	countWords,
-	type Explorer,
 	getExplorers,
 	isValidUrl,
 	validateEventWiki,
