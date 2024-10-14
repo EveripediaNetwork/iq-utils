@@ -169,7 +169,7 @@ export const Media = z.object({
 export type Media = z.infer<typeof Media>;
 
 const MetaData = z.object({
-	id: z.union([CommonMetaIds, EditSpecificMetaIds]),
+	id: z.string(),
 	value: z.any(),
 });
 export type MetaData = z.infer<typeof MetaData>;

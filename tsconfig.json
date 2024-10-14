@@ -12,8 +12,25 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,
-		"types": ["node"],
-		"typeRoots": ["node_modules/@types"]
+		"types": [
+			"node"
+		],
+		"typeRoots": [
+			"node_modules/@types"
+		]
 	},
-	"exclude": ["node_modules", "dist", "src/__test__/**", "**/*.md"]
+	"plugins": [
+		{
+			"name": "gql.tada/ts-plugin",
+			"schema": "https://graph.everipedia.org/graphql",
+			"tadaOutputLocation": "./graphql-env.d.ts",
+			"trackFieldUsage": false
+		}
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"src/__test__/**",
+		"**/*.md"
+	]
 }
