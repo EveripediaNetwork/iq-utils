@@ -9,6 +9,9 @@ import {
 import {
 	areContentLinksVerified,
 	countWords,
+	type Explorer,
+	getExplorers,
+	isValidUrl,
 	validateEventWiki,
 	validateMediaContent,
 	validateMediaCount,
@@ -238,33 +241,12 @@ export const Wiki = z
 			.array(Image)
 			.min(1, "Add a main image on the right column to continue"),
 		categories: z.array(BaseCategory).min(1, "Add one category to continue"),
-		tags: z
-			.array(
-				z.object({
-					id: z.string(),
-				}),
-			)
-			.transform((tags) =>
-				tags.map((tag) => ({
-					id: Tag.parse(tag.id),
-				})),
-			)
-			.refine(
-				(tags) => {
-					const invalidTags = tags.filter(
-						(tag) => !Tag.safeParse(tag.id).success,
-					);
-					if (invalidTags.length > 0) {
-						throw new Error(
-							`Invalid tag(s) found: ${invalidTags.map((tag) => tag.id).join(", ")}`,
-						);
-					}
-					return true;
-				},
-				{
-					message: "Invalid tag(s) found",
-				},
-			),
+		tags: z.array(z.object({ id: z.string() })).transform((tags) =>
+			tags
+				.map((tag) => ({ id: Tag.safeParse(tag.id) }))
+				.filter((result) => result.id.success)
+				.map((result) => ({ id: result.id.data })),
+		),
 		media: z
 			.array(Media)
 			.max(MAX_MEDIA_COUNT)
@@ -273,12 +255,33 @@ export const Wiki = z
 				return validateMediaContent(media) && validateMediaCount(media);
 			}, "Media is invalid")
 			.optional(),
-		metadata: z.array(MetaData).refine((metadata) => {
-			const references = metadata.find(
-				(meta) => meta.id === CommonMetaIds.Enum.references,
-			);
-			return !references?.value || references.value.length > 0;
-		}, "Please add at least one citation"),
+		metadata: z
+			.array(MetaData)
+			.refine((metadata) => {
+				const references = metadata.find(
+					(meta) => meta.id === CommonMetaIds.Enum.references,
+				);
+				return !references?.value || references.value.length > 0;
+			}, "Please add at least one citation")
+			.refine(async (metadata) => {
+				const explorers = await getExplorers();
+				const validIds = new Set([
+					...CommonMetaIds.options,
+					...EditSpecificMetaIds.options,
+					...explorers.map((e) => e.id),
+				]);
+
+				return metadata.every(
+					(meta) =>
+						validIds.has(meta.id) &&
+						(!explorers.some((e) => e.id === meta.id) ||
+							(isValidUrl(meta.value) &&
+								new URL(meta.value).origin ===
+									new URL(
+										explorers.find((e) => e.id === meta.id)?.baseUrl || "",
+									).origin)),
+				);
+			}, "Invalid metadata Ids or explorer metadata"),
 		events: z.array(BaseEvents).nullish(),
 		user: z.object({
 			id: z.string(),

@@ -13,6 +13,7 @@ import {
 	MediaType,
 	type Tag,
 } from "../schema";
+import axios from "axios";
 
 /**
  * Counts the number of words in a given string.
@@ -134,3 +135,46 @@ export const areContentLinksVerified = (content: string) => {
 		}) ?? true
 	);
 };
+
+/**
+ * Fetches a list of Explorer objects from the GraphQL API.
+ *
+ * @returns A promise that resolves to an array of Explorer objects.
+ */
+export async function getExplorers() {
+	const query = `
+   query ExplorersList($offset: Int!, $limit: Int!) {
+      explorers(offset: $offset, limit: $limit) {
+        id
+        baseUrl
+        explorer
+        hidden
+      }
+    }
+  `;
+
+	const client = axios.create({
+		baseURL: "https://graphql.everipedia.org",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	// TODO: make sure to fetch all explorers here. currently only fetching first 30 explorers
+	const { data } = await client.post<Explorer[]>("", {
+		query,
+		variables: {
+			offset: 0,
+			limit: 30,
+		},
+	});
+
+	return data;
+}
+
+export interface Explorer {
+	id: string;
+	baseUrl: string;
+	explorer: string;
+	hidden: boolean;
+}
