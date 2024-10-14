@@ -19,14 +19,6 @@
 			"node_modules/@types"
 		]
 	},
-	"plugins": [
-		{
-			"name": "gql.tada/ts-plugin",
-			"schema": "https://graph.everipedia.org/graphql",
-			"tadaOutputLocation": "./graphql-env.d.ts",
-			"trackFieldUsage": false
-		}
-	],
 	"exclude": [
 		"node_modules",
 		"dist",
