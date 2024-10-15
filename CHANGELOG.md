@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.2
+
+### Patch Changes
+
+- 2da17b7: fixes graphql endpoint incorrect
+
 ## 2.0.1
 
 ### Patch Changes
