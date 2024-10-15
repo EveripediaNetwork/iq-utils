@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.3
+
+### Patch Changes
+
+- 1e7cf0f: fixes exploers not fetching
+
 ## 2.0.2
 
 ### Patch Changes
