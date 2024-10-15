@@ -184,7 +184,7 @@ export async function getExplorers(): Promise<Explorer[]> {
   `;
 
 	const client = axios.create({
-		baseURL: "https://graphql.everipedia.org",
+		baseURL: "https://graph.everipedia.org/graphql",
 		headers: {
 			"Content-Type": "application/json",
 		},
