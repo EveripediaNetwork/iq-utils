@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.1
+
+### Patch Changes
+
+- 502eda3: Updates the wiki schema to match publish schema rather than fetch from graphql
+
 ## 2.0.0
 
 ### Major Changes
@@ -170,7 +176,7 @@
         };
       };
     },
-    'title' | 'content' | 'summary'
+    "title" | "content" | "summary"
   >;
   ```
 
