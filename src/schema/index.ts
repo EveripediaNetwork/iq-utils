@@ -74,13 +74,13 @@ export const ValidatorCodes = z.enum([
 ]);
 export type ValidatorCodes = z.infer<typeof ValidatorCodes>;
 
-const LanguagesISO = z.enum(["en", "es", "zh", "ko"]);
+export const LanguagesISO = z.enum(["en", "es", "zh", "ko"]);
 export type LanguagesISO = z.infer<typeof LanguagesISO>;
 
-const LinkedWikiKey = z.enum(["founders", "blockchains", "speakers"]);
+export const LinkedWikiKey = z.enum(["founders", "blockchains", "speakers"]);
 export type LinkedWikiKey = z.infer<typeof LinkedWikiKey>;
 
-const EventType = z.enum(["CREATED", "DEFAULT", "MULTIDATE"]);
+export const EventType = z.enum(["CREATED", "DEFAULT", "MULTIDATE"]);
 export type EventType = z.infer<typeof EventType>;
 
 export const Tag = z.enum([
@@ -136,14 +136,14 @@ export type Category = z.infer<typeof Category>;
  * ==============================
  */
 
-const ProfileLinks = z.object({
+export const ProfileLinks = z.object({
 	twitter: z.string().nullable(),
 	website: z.string().nullable(),
 	instagram: z.string().nullable(),
 });
 export type ProfileLinks = z.infer<typeof ProfileLinks>;
 
-const ProfileData = z.object({
+export const ProfileData = z.object({
 	id: z.string().nullable(),
 	username: z.string().nullable(),
 	bio: z.string().nullable(),
@@ -176,7 +176,7 @@ const MetaData = z.object({
 });
 export type MetaData = z.infer<typeof MetaData>;
 
-const BaseCategory = z.object({
+export const BaseCategory = z.object({
 	id: Category,
 	title: z.string(),
 });
@@ -196,12 +196,6 @@ export const BaseEvents = z.object({
 	action: z.enum(["DELETE", "EDIT", "CREATE"]).nullish(),
 });
 export type BaseEvents = z.infer<typeof BaseEvents>;
-
-const WikiReference = z.object({
-	id: z.string(),
-	title: z.string(),
-});
-export type WikiReference = z.infer<typeof WikiReference>;
 
 /**
  * ========================
