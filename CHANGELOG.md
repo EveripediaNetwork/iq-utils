@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.4
+
+### Patch Changes
+
+- f720614: Fixes types for getExplorers
+
 ## 2.0.3
 
 ### Patch Changes
