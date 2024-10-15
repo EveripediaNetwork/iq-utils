@@ -7,11 +7,13 @@ import {
 	WIKI_TITLE_MAX_LENGTH,
 } from "../data/constants";
 import {
-	areContentLinksVerified,
-	countWords,
-	validateEventWiki,
-	validateMediaContent,
-	validateMediaCount,
+	areMetadataAndExplorerValid,
+	containsOnlyVerifiedLinks,
+	hasAtLeastOneReference,
+	hasMinimumWordCount,
+	isEventWikiValid,
+	isMediaContentAndCountValid,
+	transformAndFilterTags,
 } from "../lib/wiki-helpers";
 
 /**
@@ -46,36 +48,11 @@ export const CommonMetaIds = z.enum([
 	"medium_profile",
 	"mirror_profile",
 	"tiktok_profile",
-	"etherscan_profile",
-	"arbiscan_profile",
-	"polygonscan_profile",
-	"bscscan_profile",
-	"optimistic_etherscan_profile",
-	"basescan_profile",
-	"ftmscan_profile",
-	"solscan_profile",
-	"avascan_profile",
-	"nearblocks_profile",
-	"troscan_profile",
-	"xrpscan_profile",
-	"kavascan_profile",
-	"tonscan_profile",
-	"celoscan_profile",
-	"cronoscan_profile",
-	"zkscan_profile",
 	"explorer_injective_profile",
-	"blastscan_profile",
 ]);
 export type CommonMetaIds = z.infer<typeof CommonMetaIds>;
 
-export const EditSpecificMetaIds = z.enum([
-	"previous_cid",
-	"commit-message",
-	"words-changed",
-	"percent-changed",
-	"blocks-changed",
-	"wiki-score",
-]);
+export const EditSpecificMetaIds = z.enum(["previous_cid", "commit-message"]);
 export type EditSpecificMetaIds = z.infer<typeof EditSpecificMetaIds>;
 
 export const ValidatorCodes = z.enum([
@@ -97,13 +74,13 @@ export const ValidatorCodes = z.enum([
 ]);
 export type ValidatorCodes = z.infer<typeof ValidatorCodes>;
 
-const LanguagesISO = z.enum(["en", "es", "zh", "ko"]);
+export const LanguagesISO = z.enum(["en", "es", "zh", "ko"]);
 export type LanguagesISO = z.infer<typeof LanguagesISO>;
 
-const LinkedWikiKey = z.enum(["founders", "blockchains", "speakers"]);
+export const LinkedWikiKey = z.enum(["founders", "blockchains", "speakers"]);
 export type LinkedWikiKey = z.infer<typeof LinkedWikiKey>;
 
-const EventType = z.enum(["CREATED", "DEFAULT", "MULTIDATE"]);
+export const EventType = z.enum(["CREATED", "DEFAULT", "MULTIDATE"]);
 export type EventType = z.infer<typeof EventType>;
 
 export const Tag = z.enum([
@@ -159,14 +136,14 @@ export type Category = z.infer<typeof Category>;
  * ==============================
  */
 
-const ProfileLinks = z.object({
+export const ProfileLinks = z.object({
 	twitter: z.string().nullable(),
 	website: z.string().nullable(),
 	instagram: z.string().nullable(),
 });
 export type ProfileLinks = z.infer<typeof ProfileLinks>;
 
-const ProfileData = z.object({
+export const ProfileData = z.object({
 	id: z.string().nullable(),
 	username: z.string().nullable(),
 	bio: z.string().nullable(),
@@ -194,37 +171,31 @@ export const Media = z.object({
 export type Media = z.infer<typeof Media>;
 
 const MetaData = z.object({
-	id: z.union([CommonMetaIds, EditSpecificMetaIds]),
+	id: z.string(),
 	value: z.any(),
 });
 export type MetaData = z.infer<typeof MetaData>;
 
-const BaseCategory = z.object({
+export const BaseCategory = z.object({
 	id: Category,
 	title: z.string(),
 });
 export type BaseCategory = z.infer<typeof BaseCategory>;
 
 export const BaseEvents = z.object({
-	id: z.string().optional().nullable(),
+	id: z.string().nullish(),
 	date: z.string().nullable(),
-	title: z.string().optional().nullable(),
+	title: z.string().nullish(),
 	type: EventType.nullable(),
-	description: z.string().optional().nullable(),
-	link: z.string().optional().nullable(),
-	multiDateStart: z.string().optional().nullable(),
-	multiDateEnd: z.string().optional().nullable(),
-	continent: z.string().optional().nullable(),
-	country: z.string().optional().nullable(),
-	action: z.enum(["DELETE", "EDIT", "CREATE"]).optional().nullable(),
+	description: z.string().nullish(),
+	link: z.string().nullish(),
+	multiDateStart: z.string().nullish(),
+	multiDateEnd: z.string().nullish(),
+	continent: z.string().nullish(),
+	country: z.string().nullish(),
+	action: z.enum(["DELETE", "EDIT", "CREATE"]).nullish(),
 });
 export type BaseEvents = z.infer<typeof BaseEvents>;
-
-const WikiReference = z.object({
-	id: z.string(),
-	title: z.string(),
-});
-export type WikiReference = z.infer<typeof WikiReference>;
 
 /**
  * ========================
@@ -242,16 +213,15 @@ export const Wiki = z
 				WIKI_TITLE_MAX_LENGTH,
 				`Title should be less than ${WIKI_TITLE_MAX_LENGTH} characters`,
 			),
-		ipfs: z.string().optional(),
 		content: z
 			.string()
 			.min(1, "Add a Content section to continue")
 			.refine(
-				(content) => countWords(content) >= WIKI_CONTENT_MIN_WORDS,
+				hasMinimumWordCount,
 				`Add a minimum of ${WIKI_CONTENT_MIN_WORDS} words in the content section to continue`,
 			)
 			.refine(
-				areContentLinksVerified,
+				containsOnlyVerifiedLinks,
 				"Please remove all external links from the content",
 			),
 		summary: z
@@ -265,97 +235,40 @@ export const Wiki = z
 			.min(1, "Add a main image on the right column to continue"),
 		categories: z.array(BaseCategory).min(1, "Add one category to continue"),
 		tags: z
-			.array(
-				z.object({
-					id: z.string(),
-				}),
-			)
-			.transform((tags) =>
-				tags.map((tag) => ({
-					id: Tag.parse(tag.id),
-				})),
-			)
-			.refine(
-				(tags) => {
-					const invalidTags = tags.filter(
-						(tag) => !Tag.safeParse(tag.id).success,
-					);
-					if (invalidTags.length > 0) {
-						throw new Error(
-							`Invalid tag(s) found: ${invalidTags.map((tag) => tag.id).join(", ")}`,
-						);
-					}
-					return true;
-				},
-				{
-					message: "Invalid tag(s) found",
-				},
-			),
-
+			.array(z.object({ id: z.string() }))
+			.transform(transformAndFilterTags),
 		media: z
 			.array(Media)
 			.max(MAX_MEDIA_COUNT)
-			.refine((media) => {
-				if (!media) return true;
-				return validateMediaContent(media) && validateMediaCount(media);
-			}, "Media is invalid")
+			.refine(isMediaContentAndCountValid, "Media is invalid")
 			.optional(),
-		metadata: z.array(MetaData).refine((metadata) => {
-			const references = metadata.find(
-				(meta) => meta.id === CommonMetaIds.Enum.references,
-			);
-			return !references?.value || references.value.length > 0;
-		}, "Please add at least one citation"),
-		events: z.array(BaseEvents).optional().nullable(),
-		user: z.object({
-			id: z.string(),
-			profile: ProfileData.nullable(),
-		}),
-		author: z.object({
-			id: z.string(),
-			profile: ProfileData.nullable(),
-		}),
+		metadata: z
+			.array(MetaData)
+			.refine(hasAtLeastOneReference, "Please add at least one citation")
+			.refine(
+				areMetadataAndExplorerValid,
+				"Invalid metadata Ids or explorer metadata",
+			),
+		events: z.array(BaseEvents).nullish(),
+		user: z.object({ id: z.string() }),
+		author: z.object({ id: z.string() }),
 		language: LanguagesISO.default(LanguagesISO.Enum.en),
 		version: z.number().default(1),
-		hidden: z.boolean().default(false),
-		promoted: z.number().default(0),
-		views: z.number().optional().default(0),
 		linkedWikis: z
 			.object({
-				[LinkedWikiKey.Enum.blockchains]: z
-					.array(z.string())
-					.optional()
-					.nullable(),
-				[LinkedWikiKey.Enum.founders]: z
-					.array(z.string())
-					.optional()
-					.nullable(),
-				[LinkedWikiKey.Enum.speakers]: z
-					.array(z.string())
-					.optional()
-					.nullable(),
+				[LinkedWikiKey.Enum.blockchains]: z.array(z.string()).nullish(),
+				[LinkedWikiKey.Enum.founders]: z.array(z.string()).nullish(),
+				[LinkedWikiKey.Enum.speakers]: z.array(z.string()).nullish(),
 			})
-			.nullable()
-			.optional()
+			.nullish()
 			.default({}),
-		founderWikis: z.array(WikiReference).optional().default([]),
-		blockchainWikis: z.array(WikiReference).optional().default([]),
 	})
-	.refine(
-		(arg) =>
-			validateEventWiki(
-				arg as {
-					tags: { id: z.infer<typeof Tag> }[];
-					metadata: { id: string; value?: string }[];
-					events?: unknown[];
-				},
-			),
-		{
-			message:
-				"Event wikis must have an event link citation and at least one event date",
-			path: ["events"],
-		},
-	);
+	.refine(isEventWikiValid, {
+		message:
+			"Event wikis must have an event link citation and at least one event date",
+		path: ["events"],
+	});
+
 export type Wiki = z.infer<typeof Wiki>;
 
 export const Reference = z.object({
