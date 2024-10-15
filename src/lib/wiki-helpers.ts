@@ -136,9 +136,9 @@ export function hasAtLeastOneReference(metadata: MetaData[]): boolean {
 	return references.length > 0;
 }
 
-export async function areMetadataAndExplorerValid(
+export async function transformAndFilterMetadata(
 	metadata: MetaData[],
-): Promise<boolean> {
+): Promise<MetaData[]> {
 	const explorers = await getExplorers();
 	const validIds = new Set([
 		...CommonMetaIds.options,
@@ -146,15 +146,19 @@ export async function areMetadataAndExplorerValid(
 		...explorers.map((e) => e.id),
 	]);
 
-	return metadata.every(
-		(meta) =>
-			validIds.has(meta.id) &&
-			(!explorers.some((e) => e.id === meta.id) ||
-				(isValidUrl(meta.value) &&
-					new URL(meta.value).origin ===
-						new URL(explorers.find((e) => e.id === meta.id)?.baseUrl || "")
-							.origin)),
-	);
+	return metadata.filter((meta) => {
+		if (!validIds.has(meta.id)) return false;
+
+		const explorer = explorers.find((e) => e.id === meta.id);
+		if (explorer) {
+			return (
+				isValidUrl(meta.value) &&
+				new URL(meta.value).origin === new URL(explorer.baseUrl).origin
+			);
+		}
+
+		return true;
+	});
 }
 
 // ===============================
@@ -203,11 +207,6 @@ export async function getExplorers() {
 // ===============================
 // Types
 // ===============================
-interface WikiEventData {
-	tags: { id: z.infer<typeof Tag> }[];
-	metadata: { id: string; value?: string }[];
-	events?: unknown[];
-}
 
 interface Explorer {
 	id: string;

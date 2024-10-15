@@ -7,7 +7,7 @@ import {
 	WIKI_TITLE_MAX_LENGTH,
 } from "../data/constants";
 import {
-	areMetadataAndExplorerValid,
+	transformAndFilterMetadata,
 	containsOnlyVerifiedLinks,
 	hasAtLeastOneReference,
 	hasMinimumWordCount,
@@ -245,10 +245,7 @@ export const Wiki = z
 		metadata: z
 			.array(MetaData)
 			.refine(hasAtLeastOneReference, "Please add at least one citation")
-			.refine(
-				areMetadataAndExplorerValid,
-				"Invalid metadata Ids or explorer metadata",
-			),
+			.transform(transformAndFilterMetadata),
 		events: z.array(BaseEvents).nullish(),
 		user: z.object({ id: z.string() }),
 		author: z.object({ id: z.string() }),
