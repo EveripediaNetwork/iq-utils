@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.5
+
+### Patch Changes
+
+- f291070: Filters invalid metadata for backwards compatibility instead of erroring
+
 ## 2.0.4
 
 ### Patch Changes
