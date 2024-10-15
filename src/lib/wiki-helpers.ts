@@ -169,7 +169,7 @@ export function transformAndFilterTags(tags: { id: string }[]): { id: Tag }[] {
 // ===============================
 // API-related helpers
 // ===============================
-export async function getExplorers(): Promise<Explorer[]> {
+export async function getExplorers() {
 	const query = `
    query ExplorersList($offset: Int!, $limit: Int!) {
       explorers(offset: $offset, limit: $limit) {
@@ -189,7 +189,7 @@ export async function getExplorers(): Promise<Explorer[]> {
 	});
 
 	// TODO: make sure to fetch all explorers here. currently only fetching first 30 explorers
-	const { data } = await client.post<Explorer[]>("", {
+	const { data } = await client.post<{ data: { explorers: Explorer[] } }>("", {
 		query,
 		variables: {
 			offset: 0,
@@ -197,7 +197,7 @@ export async function getExplorers(): Promise<Explorer[]> {
 		},
 	});
 
-	return data;
+	return data.data.explorers;
 }
 
 // ===============================
