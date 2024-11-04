@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.7
+
+### Patch Changes
+
+- 2f03243: Removes cache for getExplorers on wiki validation
+
 ## 2.0.6
 
 ### Patch Changes
