@@ -1,5 +1,4 @@
-import type { z } from "zod";
-
+import axios from "axios";
 import {
 	IPFS_HASH_LENGTH,
 	MAX_MEDIA_COUNT,
@@ -16,7 +15,6 @@ import {
 	type MetaData,
 	Tag,
 } from "../schema";
-import axios from "axios";
 
 // ===============================
 // Text and content helpers
@@ -173,27 +171,34 @@ export function transformAndFilterTags(tags: { id: string }[]): { id: Tag }[] {
 // ===============================
 // API-related helpers
 // ===============================
+import { setupCache } from "axios-cache-adapter";
+
+// Create cache instance outside the function to persist between calls
+const cache = setupCache({
+	maxAge: 24 * 60 * 60 * 1000, // Cache for 24 hours
+});
+
+const api = axios.create({
+	baseURL: "https://graph.everipedia.org/graphql",
+	headers: {
+		"Content-Type": "application/json",
+	},
+	adapter: cache.adapter,
+});
+
 export async function getExplorers() {
 	const query = `
-   query ExplorersList($offset: Int!, $limit: Int!) {
-      explorers(offset: $offset, limit: $limit) {
-        id
-        baseUrl
-        explorer
-        hidden
-      }
-    }
-  `;
+		query ExplorersList($offset: Int!, $limit: Int!) {
+			explorers(offset: $offset, limit: $limit) {
+				id
+				baseUrl
+				explorer
+				hidden
+			}
+		}
+	`;
 
-	const client = axios.create({
-		baseURL: "https://graph.everipedia.org/graphql",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-
-	// TODO: make sure to fetch all explorers here. currently only fetching first 30 explorers
-	const { data } = await client.post<{ data: { explorers: Explorer[] } }>("", {
+	const { data } = await api.post<{ data: { explorers: Explorer[] } }>("", {
 		query,
 		variables: {
 			offset: 0,
