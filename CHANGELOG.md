@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.6
+
+### Patch Changes
+
+- abdf888: Adds cache to getExplorers function call in wiki validation
+
 ## 2.0.5
 
 ### Patch Changes
