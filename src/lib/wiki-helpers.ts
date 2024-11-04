@@ -171,19 +171,12 @@ export function transformAndFilterTags(tags: { id: string }[]): { id: Tag }[] {
 // ===============================
 // API-related helpers
 // ===============================
-import { setupCache } from "axios-cache-adapter";
-
-// Create cache instance outside the function to persist between calls
-const cache = setupCache({
-	maxAge: 24 * 60 * 60 * 1000, // Cache for 24 hours
-});
 
 const api = axios.create({
 	baseURL: "https://graph.everipedia.org/graphql",
 	headers: {
 		"Content-Type": "application/json",
 	},
-	adapter: cache.adapter,
 });
 
 export async function getExplorers() {
