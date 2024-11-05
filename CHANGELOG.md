@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.9
+
+### Patch Changes
+
+- 3f7a4d2: Changes cache stragegy for getExplorers on wiki zod schema
+
 ## 2.0.8
 
 ### Patch Changes
