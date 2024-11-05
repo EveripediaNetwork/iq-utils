@@ -1,4 +1,5 @@
 import axios from "axios";
+import QuickLRU from "quick-lru";
 import {
 	IPFS_HASH_LENGTH,
 	MAX_MEDIA_COUNT,
@@ -15,7 +16,6 @@ import {
 	type MetaData,
 	Tag,
 } from "../schema";
-import { setupCache, buildWebStorage } from "axios-cache-interceptor";
 
 // ===============================
 // Text and content helpers
@@ -173,31 +173,36 @@ export function transformAndFilterTags(tags: { id: string }[]): { id: Tag }[] {
 // API-related helpers
 // ===============================
 
-const api = setupCache(
-	axios.create({
-		baseURL: "https://graph.everipedia.org/graphql",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	}),
-	{
-		storage: buildWebStorage(localStorage, "axios-cache:"),
-		ttl: 12 * 60 * 60 * 1000, // 12 hours
-		interpretHeader: false,
-	},
-);
+const cache = new QuickLRU({
+	maxSize: 1000,
+	maxAge: 12 * 60 * 60 * 1000, // 12 hours
+});
 
-export async function getExplorers() {
+export const api = axios.create({
+	baseURL: "https://graph.everipedia.org/graphql",
+	headers: {
+		"Content-Type": "application/json",
+	},
+});
+
+export async function getExplorers(): Promise<Explorer[]> {
+	const cacheKey = "explorers";
+	const cachedData = cache.get(cacheKey) as Explorer[];
+
+	if (cachedData) {
+		return cachedData;
+	}
+
 	const query = `
-		query ExplorersList($offset: Int!, $limit: Int!) {
-			explorers(offset: $offset, limit: $limit) {
-				id
-				baseUrl
-				explorer
-				hidden
-			}
-		}
-	`;
+    query ExplorersList($offset: Int!, $limit: Int!) {
+      explorers(offset: $offset, limit: $limit) {
+        id
+        baseUrl
+        explorer
+        hidden
+      }
+    }
+  `;
 
 	const { data } = await api.post<{ data: { explorers: Explorer[] } }>("", {
 		query,
@@ -207,7 +212,10 @@ export async function getExplorers() {
 		},
 	});
 
-	return data.data.explorers;
+	const explorers = data.data.explorers;
+	cache.set(cacheKey, explorers);
+
+	return explorers;
 }
 
 // ===============================
