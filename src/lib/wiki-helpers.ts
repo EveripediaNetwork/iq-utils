@@ -15,6 +15,7 @@ import {
 	type MetaData,
 	Tag,
 } from "../schema";
+import { setupCache, buildWebStorage } from "axios-cache-interceptor";
 
 // ===============================
 // Text and content helpers
@@ -172,12 +173,19 @@ export function transformAndFilterTags(tags: { id: string }[]): { id: Tag }[] {
 // API-related helpers
 // ===============================
 
-const api = axios.create({
-	baseURL: "https://graph.everipedia.org/graphql",
-	headers: {
-		"Content-Type": "application/json",
+const api = setupCache(
+	axios.create({
+		baseURL: "https://graph.everipedia.org/graphql",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	}),
+	{
+		storage: buildWebStorage(localStorage, "axios-cache:"),
+		ttl: 12 * 60 * 60 * 1000, // 12 hours
+		interpretHeader: false,
 	},
-});
+);
 
 export async function getExplorers() {
 	const query = `
