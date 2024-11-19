@@ -161,7 +161,7 @@ export type Image = z.infer<typeof Image>;
 
 export const Media = z.object({
 	id: z.string(),
-	size: z.string().nullish(),
+	size: z.union([z.string(), z.number()]).nullish(),
 	name: z.string().nullish(),
 	type: MediaType.nullish(),
 	caption: z.string().nullish(),
