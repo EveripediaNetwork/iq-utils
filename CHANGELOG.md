@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.0.10
+
+### Patch Changes
+
+- 0b45fb7: make media size string or number
+
 ## 2.0.9
 
 ### Patch Changes
