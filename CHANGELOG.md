@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.2.0
+
+### Minor Changes
+
+- 3ae2dd9: updates youtube regex pattern to match multiple youtube links
+
 ## 2.1.1
 
 ### Patch Changes
