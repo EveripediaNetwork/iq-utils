@@ -74,7 +74,7 @@ export function isMediaContentValid(media: Media[]): boolean {
 
 		if (item.source === MediaSource.Enum.YOUTUBE) {
 			const youtubePattern =
-				/^.*(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/|watch\?v=)([^#&?]*).*/;
+				/^.*(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/|watch\?v=)([^#&?]*)(?:\?si=[^#&?]*)?(?:\?v=[^#&?]*)?(?:[#&].*)?$/;
 			return (
 				item.id === `https://www.youtube.com/watch?v=${item.name}` &&
 				youtubePattern.test(item.id)
