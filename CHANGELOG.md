@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.1.0
+
+### Minor Changes
+
+- 8c90127: Adds .default([]) to linkedWikis keys
+
 ## 2.0.10
 
 ### Patch Changes
