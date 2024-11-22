@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.2.2
+
+### Patch Changes
+
+- 86272bf: Removes default object passing
+
 ## 2.2.1
 
 ### Patch Changes
