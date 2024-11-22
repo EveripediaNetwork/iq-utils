@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.2.4
+
+### Patch Changes
+
+- d0c493f: rename schema
+
 ## 2.2.3
 
 ### Patch Changes
