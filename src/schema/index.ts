@@ -271,7 +271,7 @@ export const Wiki = z
 					.transform((val) => val ?? [])
 					.default([]),
 			})
-			.nullable()
+			.nullish()
 			.default({}),
 	})
 	.refine(isEventWikiValid, {
