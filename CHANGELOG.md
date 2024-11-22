@@ -1,5 +1,12 @@
 ## 0.2.8
 
+## 2.2.3
+
+### Patch Changes
+
+- b178082: Reforms transform for wiki links
+- bc16932: Reform type for linkedwikis
+
 ## 2.2.2
 
 ### Patch Changes
