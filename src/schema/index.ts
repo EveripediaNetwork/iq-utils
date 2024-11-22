@@ -253,9 +253,18 @@ export const Wiki = z
 		version: z.number().default(1),
 		linkedWikis: z
 			.object({
-				[LinkedWikiKey.Enum.blockchains]: z.array(z.string()).nullish(),
-				[LinkedWikiKey.Enum.founders]: z.array(z.string()).nullish(),
-				[LinkedWikiKey.Enum.speakers]: z.array(z.string()).nullish(),
+				[LinkedWikiKey.Enum.blockchains]: z
+					.array(z.string())
+					.nullish()
+					.default([]),
+				[LinkedWikiKey.Enum.founders]: z
+					.array(z.string())
+					.nullish()
+					.default([]),
+				[LinkedWikiKey.Enum.speakers]: z
+					.array(z.string())
+					.nullish()
+					.default([]),
 			})
 			.nullish()
 			.default({}),
