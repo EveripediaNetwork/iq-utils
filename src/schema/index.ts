@@ -255,7 +255,6 @@ export const Wiki = z
 			.object({
 				[LinkedWikiKey.Enum.blockchains]: z.array(z.string()).nullable(),
 				[LinkedWikiKey.Enum.founders]: z.array(z.string()).nullable(),
-
 				[LinkedWikiKey.Enum.speakers]: z.array(z.string()).nullable(),
 			})
 			.nullable()
@@ -264,14 +263,12 @@ export const Wiki = z
 				[LinkedWikiKey.Enum.founders]: [],
 				[LinkedWikiKey.Enum.speakers]: [],
 			})
-			.transform(
-				(val) =>
-					val ?? {
-						[LinkedWikiKey.Enum.blockchains]: [],
-						[LinkedWikiKey.Enum.founders]: [],
-						[LinkedWikiKey.Enum.speakers]: [],
-					},
-			),
+			.transform((val) => ({
+				[LinkedWikiKey.Enum.blockchains]:
+					val?.[LinkedWikiKey.Enum.blockchains] ?? [],
+				[LinkedWikiKey.Enum.founders]: val?.[LinkedWikiKey.Enum.founders] ?? [],
+				[LinkedWikiKey.Enum.speakers]: val?.[LinkedWikiKey.Enum.speakers] ?? [],
+			})),
 	})
 	.refine(isEventWikiValid, {
 		message:
