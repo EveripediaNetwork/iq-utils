@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.2.1
+
+### Patch Changes
+
+- c150712: Replace .nullable to .nullish
+
 ## 2.2.0
 
 ### Minor Changes
