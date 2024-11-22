@@ -255,18 +255,23 @@ export const Wiki = z
 			.object({
 				[LinkedWikiKey.Enum.blockchains]: z
 					.array(z.string())
-					.nullish()
+					.nullable()
+					.transform((val) => val ?? [])
 					.default([]),
+
 				[LinkedWikiKey.Enum.founders]: z
 					.array(z.string())
-					.nullish()
+					.nullable()
+					.transform((val) => val ?? [])
 					.default([]),
+
 				[LinkedWikiKey.Enum.speakers]: z
 					.array(z.string())
-					.nullish()
+					.nullable()
+					.transform((val) => val ?? [])
 					.default([]),
 			})
-			.nullish()
+			.nullable()
 			.default({}),
 	})
 	.refine(isEventWikiValid, {
