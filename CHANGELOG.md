@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.1.1
+
+### Patch Changes
+
+- 03e8e40: Fixes null to array transform for linked wikis
+
 ## 2.1.0
 
 ### Minor Changes
