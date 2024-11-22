@@ -258,21 +258,18 @@ export const Wiki = z
 					.nullable()
 					.transform((val) => val ?? [])
 					.default([]),
-
 				[LinkedWikiKey.Enum.founders]: z
 					.array(z.string())
 					.nullable()
 					.transform((val) => val ?? [])
 					.default([]),
-
 				[LinkedWikiKey.Enum.speakers]: z
 					.array(z.string())
 					.nullable()
 					.transform((val) => val ?? [])
 					.default([]),
 			})
-			.nullish()
-			.default({}),
+			.nullish(),
 	})
 	.refine(isEventWikiValid, {
 		message:
