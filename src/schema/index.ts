@@ -251,7 +251,7 @@ export const Wiki = z
 		author: z.object({ id: z.string() }),
 		language: LanguagesISO.default(LanguagesISO.Enum.en),
 		version: z.number().default(1),
-		linkedWikisSchema: z
+		linkedWikis: z
 			.object({
 				[LinkedWikiKey.Enum.blockchains]: z.array(z.string()).nullable(),
 				[LinkedWikiKey.Enum.founders]: z.array(z.string()).nullable(),
