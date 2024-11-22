@@ -251,25 +251,27 @@ export const Wiki = z
 		author: z.object({ id: z.string() }),
 		language: LanguagesISO.default(LanguagesISO.Enum.en),
 		version: z.number().default(1),
-		linkedWikis: z
+		linkedWikisSchema: z
 			.object({
-				[LinkedWikiKey.Enum.blockchains]: z
-					.array(z.string())
-					.nullable()
-					.transform((val) => val ?? [])
-					.default([]),
-				[LinkedWikiKey.Enum.founders]: z
-					.array(z.string())
-					.nullable()
-					.transform((val) => val ?? [])
-					.default([]),
-				[LinkedWikiKey.Enum.speakers]: z
-					.array(z.string())
-					.nullable()
-					.transform((val) => val ?? [])
-					.default([]),
+				[LinkedWikiKey.Enum.blockchains]: z.array(z.string()).nullable(),
+				[LinkedWikiKey.Enum.founders]: z.array(z.string()).nullable(),
+
+				[LinkedWikiKey.Enum.speakers]: z.array(z.string()).nullable(),
 			})
-			.nullish(),
+			.nullable()
+			.default({
+				[LinkedWikiKey.Enum.blockchains]: [],
+				[LinkedWikiKey.Enum.founders]: [],
+				[LinkedWikiKey.Enum.speakers]: [],
+			})
+			.transform(
+				(val) =>
+					val ?? {
+						[LinkedWikiKey.Enum.blockchains]: [],
+						[LinkedWikiKey.Enum.founders]: [],
+						[LinkedWikiKey.Enum.speakers]: [],
+					},
+			),
 	})
 	.refine(isEventWikiValid, {
 		message:
