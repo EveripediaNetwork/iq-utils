@@ -1,5 +1,12 @@
 ## 0.2.8
 
+## 2.2.5
+
+### Patch Changes
+
+- 20010d0: Adds nullish and default
+- 20010d0: Adds default flag to keys
+
 ## 2.2.4
 
 ### Patch Changes
