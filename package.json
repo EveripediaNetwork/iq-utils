@@ -1,6 +1,6 @@
 {
 	"name": "@everipedia/iq-utils",
-	"version": "2.2.5",
+	"version": "2.3.0",
 	"description": "Common utility library for IQ projects",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
