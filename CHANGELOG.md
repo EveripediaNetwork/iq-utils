@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.3.0
+
+### Minor Changes
+
+- 45c391f: Adds nullish to linkedWiki object
+
 ## 2.2.5
 
 ### Patch Changes
