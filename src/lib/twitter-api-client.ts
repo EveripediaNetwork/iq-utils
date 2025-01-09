@@ -2,6 +2,8 @@
 import crypto from 'crypto'
 import OAuth from 'oauth-1.0a'
 
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+
 interface IDiscordLogger {
   log(data: DiscordLogData): Promise<void>
 }
@@ -30,7 +32,7 @@ const twitterAuthConfig = {
 
 export async function sendTwitterApiRequest(
   url: string,
-  method: string,
+  method: HttpMethod,
   logger?: IDiscordLogger,
   body?: string,
 ): Promise<Response> {
