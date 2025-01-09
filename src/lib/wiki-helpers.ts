@@ -15,6 +15,7 @@ import {
 	MediaType,
 	type MetaData,
 	Tag,
+	Wiki,
 } from "../schema";
 
 // ===============================
@@ -103,12 +104,15 @@ export function isMediaContentAndCountValid(media: Media[]): boolean {
 // ===============================
 // Wiki-specific validation helpers
 // ===============================
-export function isEventWikiValid(wiki: any): boolean {
-	if (wiki.tags.some((tag: any) => tag.id === "Events")) {
+export function isEventWikiValid(wiki: {
+	tags: { id: string }[];
+	metadata: { id: string; value: string }[];
+	events: unknown[];
+}): boolean {
+	if (wiki.tags.some((tag) => tag.id === "Events")) {
 		const referencesData =
-			wiki.metadata.find(
-				(meta: any) => meta.id === CommonMetaIds.Enum.references,
-			)?.value || "[]";
+			wiki.metadata.find((meta) => meta.id === CommonMetaIds.Enum.references)
+				?.value || "[]";
 		const references: { description: string }[] = JSON.parse(
 			referencesData,
 		) as { description: string }[];
