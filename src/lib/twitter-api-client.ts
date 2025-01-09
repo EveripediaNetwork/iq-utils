@@ -35,6 +35,9 @@ export async function sendTwitterApiRequest(
 	logger?: IDiscordLogger,
 	body?: string,
 ): Promise<Response> {
+	if (!url.startsWith("https://api.twitter.com/")) {
+		throw new Error("Invalid Twitter API URL");
+	}
 	const oauth_headers = oauth.toHeader(
 		oauth.authorize(
 			{
