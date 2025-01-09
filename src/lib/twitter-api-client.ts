@@ -28,7 +28,7 @@ const twitterAuthConfig = {
   secret: process.env.TWITTER_ACCESS_TOKEN_SECRET ?? '',
 }
 
-export async function makeAuthenticatedRequest(
+export async function sendTwitterApiRequest(
   url: string,
   method: string,
   logger?: IDiscordLogger,
