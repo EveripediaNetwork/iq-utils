@@ -279,12 +279,21 @@ export const Wiki = z
 				[LinkedWikiKey.Enum.speakers]: val?.[LinkedWikiKey.Enum.speakers] ?? [],
 			})),
 	})
-	.refine(isEventWikiValid, {
-		message:
-			"Event wikis must have an event link citation and at least one event date",
-		path: ["events"],
-	});
-
+	.refine(
+		(arg) =>
+			isEventWikiValid(
+				arg as {
+					tags: { id: string }[];
+					metadata: { id: string; value: string }[];
+					events: unknown[];
+				},
+			),
+		{
+			message:
+				"Event wikis must have an event link citation and at least one event date",
+			path: ["events"],
+		},
+	);
 export type Wiki = z.infer<typeof Wiki>;
 
 export const Reference = z.object({
