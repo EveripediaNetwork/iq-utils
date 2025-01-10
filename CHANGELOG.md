@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.4.0
+
+### Minor Changes
+
+- 06c3174: Add sendTwitterApiRequest lib function
+
 ## 2.3.0
 
 ### Minor Changes
