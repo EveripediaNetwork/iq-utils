@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.4.1
+
+### Patch Changes
+
+- e74fc70: expose wiki helpers
+
 ## 2.4.0
 
 ### Minor Changes
