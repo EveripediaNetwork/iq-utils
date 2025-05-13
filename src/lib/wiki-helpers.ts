@@ -22,17 +22,27 @@ import {
 // Text and content helpers
 // ===============================
 
+/**
+ * Counts the number of words in a given string.
+ * @param text - The input string to count words from.
+ * @returns The number of words in the string.
+ */
 export function countWords(text: string): number {
 	return text.split(" ").filter((word) => word !== "").length;
 }
 
-export function isValidUrl(urlString: string): boolean {
+/**
+ * Checks if a given string is a valid URL.
+ * @param urlString - The string to check.
+ * @returns True if the string is a valid URL, false otherwise.
+ */
+export const isValidUrl = (urlString: string) => {
 	try {
 		return Boolean(new URL(urlString));
 	} catch (_e) {
 		return false;
 	}
-}
+};
 
 export function containsOnlyVerifiedLinks(content: string): boolean {
 	const markdownLinks = content.match(/\[(.*?)\]\((.*?)\)/g);

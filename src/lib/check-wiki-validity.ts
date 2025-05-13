@@ -9,27 +9,7 @@ import {
 	WHITELISTED_LINK_NAMES,
 } from "../data/constants";
 import { CommonMetaIds, MediaSource, MediaType, type Wiki } from "../schema";
-
-/**
- * Counts the number of words in a given string.
- * @param text - The input string to count words from.
- * @returns The number of words in the string.
- */
-export const countWords = (text: string) =>
-	text.split(" ").filter((word) => word !== "").length;
-
-/**
- * Checks if a given string is a valid URL.
- * @param urlString - The string to check.
- * @returns True if the string is a valid URL, false otherwise.
- */
-export const isValidUrl = (urlString: string) => {
-	try {
-		return Boolean(new URL(urlString));
-	} catch (_e) {
-		return false;
-	}
-};
+import { countWords, isValidUrl } from "./wiki-helpers";
 
 /**
  * Checks if all content links in the given text are verified.
