@@ -183,7 +183,7 @@ const cache = new QuickLRU({
 });
 
 export const api = axios.create({
-	baseURL: "https://graph.everipedia.org/graphql",
+	baseURL: "https://api.iq.wiki/graphql",
 	headers: {
 		"Content-Type": "application/json",
 	},
