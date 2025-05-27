@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.4.2
+
+### Patch Changes
+
+- 6431997: Update GraphQL API baseURL to api.iq.wiki
+
 ## 2.4.1
 
 ### Patch Changes
