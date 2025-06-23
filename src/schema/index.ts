@@ -84,8 +84,8 @@ export const EventType = z.enum(["CREATED", "DEFAULT", "MULTIDATE"]);
 export type EventType = z.infer<typeof EventType>;
 
 export const Tag = z.enum([
-	"Artists",
 	"AI",
+	"Artists",
 	"BinanceSmartChain",
 	"Blockchains",
 	"CEXes",
