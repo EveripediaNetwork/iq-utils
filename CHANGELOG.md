@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.4.3
+
+### Patch Changes
+
+- 06bfda0: Add "Government" and "Regulations" to Tag enum
+
 ## 2.4.2
 
 ### Patch Changes
