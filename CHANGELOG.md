@@ -1,5 +1,11 @@
 ## 0.2.8
 
+## 2.4.4
+
+### Patch Changes
+
+- f830dca: add operator field to wiki schema
+
 ## 2.4.3
 
 ### Patch Changes
