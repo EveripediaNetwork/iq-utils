@@ -251,6 +251,7 @@ export const Wiki = z
 		events: z.array(BaseEvents).nullish(),
 		user: z.object({ id: z.string() }),
 		author: z.object({ id: z.string() }),
+		operator: z.object({ id: z.string() }).optional(),
 		language: LanguagesISO.default(LanguagesISO.Enum.en),
 		version: z.number().default(1),
 		linkedWikis: z
