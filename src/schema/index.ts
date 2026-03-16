@@ -142,6 +142,7 @@ export const Tag = z.enum([
 	"Ethereum",
 	"Solana",
 	"BNBChain",
+	"Polygon",
 	"Polkadot",
 	"Avalanche",
 	"Cosmos",
