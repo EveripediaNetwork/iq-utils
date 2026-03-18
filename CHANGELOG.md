@@ -1,3 +1,9 @@
+## 2.5.0
+
+### Minor Changes
+
+- 7521a30: Expand Tag and Category enums with new taxonomy values while preserving existing ones
+
 ## 0.2.8
 
 ## 2.4.4
