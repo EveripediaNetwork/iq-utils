@@ -1,3 +1,9 @@
+## 3.0.0
+
+### Major Changes
+
+- 94b03d6: Rename people_and_teams category to people
+
 ## 2.5.0
 
 ### Minor Changes
