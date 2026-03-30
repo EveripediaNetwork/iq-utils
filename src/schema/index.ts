@@ -178,7 +178,7 @@ export const Tag = z.enum([
 export type Tag = z.infer<typeof Tag>;
 
 export const Category = z.enum([
-	"people_and_teams",
+	"people",
 	"projects_and_protocols",
 	"organizations",
 	"cryptoassets",
