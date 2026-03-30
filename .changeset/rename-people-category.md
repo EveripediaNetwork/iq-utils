@@ -1,5 +1,5 @@
 ---
-"@everipedia/iq-utils": minor
+"@everipedia/iq-utils": major
 ---
 
 Rename people_and_teams category to people
