@@ -1,3 +1,9 @@
+## 4.0.0
+
+### Major Changes
+
+- e80622a: Rename category enum values from snake_case to kebab-case
+
 ## 3.0.0
 
 ### Major Changes
