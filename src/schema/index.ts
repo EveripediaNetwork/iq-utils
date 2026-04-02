@@ -179,10 +179,10 @@ export type Tag = z.infer<typeof Tag>;
 
 export const Category = z.enum([
 	"people",
-	"projects_and_protocols",
+	"projects-and-protocols",
 	"organizations",
 	"cryptoassets",
-	"exchanges_and_marketplaces",
+	"exchanges-and-marketplaces",
 	"events",
 ]);
 export type Category = z.infer<typeof Category>;
