@@ -243,7 +243,7 @@ export const BaseEvents = z.object({
 	id: z.string().nullish(),
 	date: z.string().nullable(),
 	title: z.string().nullish(),
-	type: EventType.nullable(),
+	type: EventType.nullish(),
 	description: z.string().nullish(),
 	link: z.string().nullish(),
 	multiDateStart: z.string().nullish(),
