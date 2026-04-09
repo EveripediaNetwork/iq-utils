@@ -1,3 +1,9 @@
+## 4.1.0
+
+### Minor Changes
+
+- 95eaa40: Allow nullish EventType in BaseEvents schema to support existing wikis with null event types
+
 ## 4.0.0
 
 ### Major Changes
