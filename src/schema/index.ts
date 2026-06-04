@@ -49,6 +49,7 @@ export const CommonMetaIds = z.enum([
 	"mirror_profile",
 	"tiktok_profile",
 	"explorer_injective_profile",
+	"rootdata_profile",
 ]);
 export type CommonMetaIds = z.infer<typeof CommonMetaIds>;
 
