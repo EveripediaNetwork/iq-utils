@@ -1,3 +1,9 @@
+## 4.2.0
+
+### Minor Changes
+
+- b0b43c4: Add `rootdata_profile` to CommonMetaIds for RootData (https://www.rootdata.com/) profile links
+
 ## 4.1.0
 
 ### Minor Changes
